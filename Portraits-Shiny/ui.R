@@ -5,7 +5,9 @@ shinyServer (
     
     headerPanel("Portraits Climatiques du Québec - MFFP"),
     sidebarPanel(
-      selectInput("Variable", "Séléctionez la variable climatique:",
+
+###Variable
+       selectInput("Variable", "Séléctionez la variable climatique:",
                   choices=c("Températures moyennes, min et max","Précipitations totales et sous forme de neige",
                             "Degrés-jours de croissance", "Évènements gel-dégel", "Saison de croissance")),
       conditionalPanel(condition = "input.Variable == 'Températures moyennes, min et max'",
@@ -16,10 +18,14 @@ shinyServer (
                        actionButton("PrecTotale", "Précipitations totales (mm)"),
                        actionButton("Neige", "Précipitations sous forme de neige (cm)")),
       br(),
+      
+###Echele spatial      
       selectInput("Echele", "Séléctionez l'échele:",
                  choices=c("Domaines et sous-domaines bioclimatiques", "Régions et sous-région écologiques", 
                            "Territoires guides", "Secteurs des opérations régionales",
                            "Régions forestières", "Unités d’aménagement (UA)")),
+      
+###Saisonalité
       selectInput("Saisonalite", "Séléctionez la saisonalité:",
                   choices=c("Annuel", "Saissioniers", "Mensuel" )),
       conditionalPanel(condition = "input.Saisonalite == 'Saissioniers'",
@@ -32,11 +38,19 @@ shinyServer (
                                    choices=c("Janvier", "Février", "Mars", "Avril","Mai","Juin",
                                              "Julliet","Aout","Septembre","Octobre","Novembre","Decembre"))
                        ),
+
+###Test input
       numericInput("n", "n", 1),
+
+###Scenario
       selectInput("Scenario", "Séléctionez le scenario d'émissions:",
                   choices=c("Modérées (RCP4.5)", "Élevées (RCP8.5)" )),
+
+###Temps
       selectInput("Horizon", "Séléctionez l'horizon de temps:",
-                  choices=c("Historique (1950-20", "2041-2070 (2050)", "2071-2100 (2080)" )),
+                  choices=c("Historique (1950-2015)", "2041-2070 (2050)", "2071-2100 (2080)" )),
+
+###Percentile
       sliderInput("Percentile", "Séléctionez le percentile:",
                   min=10, max=90, value= 50, step=40)
       

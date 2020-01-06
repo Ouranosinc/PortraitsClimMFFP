@@ -31,7 +31,7 @@ shinyServer (
                        ),
       numericInput("n", "n", 1),
       selectInput("Scenario", "Séléctionez le scenario d'émissions:",
-                  choices=c("Modérées (RCP4.5)", "Élevées" )),
+                  choices=c("Modérées (RCP4.5)", "Élevées (RCP8.5)" )),
       selectInput("Horizon", "Séléctionez l'horizon de temps:",
                   choices=c("Historique", "2071-2100", "2041-2070")),
       sliderInput("Percentile", "Séléctionez le percentile:",

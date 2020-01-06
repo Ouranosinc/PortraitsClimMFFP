@@ -1,8 +1,7 @@
 shinyServer (
   pageWithSidebar(
     headerPanel("Portraits Climatiques du Québec - MFFP"),
-    #Test git
-    
+
     sidebarPanel(
       selectInput("Variable", "Séléctionez la variable climatique:",
                   choices=c("Températures moyennes, min et max","Précipitations totales et sous forme de neige",

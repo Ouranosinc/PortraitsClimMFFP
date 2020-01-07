@@ -1,7 +1,7 @@
 library(shinythemes)
 shinyServer (     
   fluidPage( 
-    themeSelector(),
+    #themeSelector(),
     
     headerPanel("Portraits Climatiques du Québec - MFFP"),
     sidebarPanel(
@@ -43,12 +43,12 @@ shinyServer (
       numericInput("n", "n", 1),
 
 ###Scenario
-      selectInput("Scenario", "Séléctionez le scenario d'émissions:",
-                  choices=c("Modérées (RCP4.5)", "Élevées (RCP8.5)" )),
+     # selectInput("Scenario", "Séléctionez le scenario d'émissions:",
+      #            choices=c("Modérées (RCP4.5)", "Élevées (RCP8.5)" )),
 
 ###Temps
       selectInput("Horizon", "Séléctionez l'horizon de temps:",
-                  choices=c("Historique (1950-2015)", "2041-2070 (2050)", "2071-2100 (2080)" )),
+                  choices=c("Historique (1950-2020)", "2041-2070 (2050)", "2071-2100 (2080)" )),
 
 ###Percentile
       sliderInput("Percentile", "Séléctionez le percentile:",
@@ -57,10 +57,16 @@ shinyServer (
     ),
     
     mainPanel(
-      imageOutput("myImage")
+      tabsetPanel(
+        tabPanel("Scenario d'émissions modérées (RCP4.5)", 
+                 basicPage(
+                   img(src='image1.png', align="left"))),
+        tabPanel("Scenario d'emissions élevées (RCP8.5)", 
+                 basicPage(
+                   img(src='image2.png', align="left")))
+        )
+      #img(src='image2.png', align="right")
+      #imageOutput("myImage")
     )
-    
   )
-  
-  
 )

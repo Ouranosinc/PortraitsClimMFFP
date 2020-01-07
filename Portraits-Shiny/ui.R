@@ -40,15 +40,15 @@ shinyServer (
                        ),
 
 ###Test input
-      numericInput("n", "n", 1),
+     # numericInput("n", "n", 1),
 
 ###Scenario
      # selectInput("Scenario", "Séléctionez le scenario d'émissions:",
       #            choices=c("Modérées (RCP4.5)", "Élevées (RCP8.5)" )),
 
 ###Temps
-      selectInput("Horizon", "Séléctionez l'horizon de temps:",
-                  choices=c("Historique (1950-2020)", "2041-2070 (2050)", "2071-2100 (2080)" )),
+     # selectInput("Horizon", "Séléctionez l'horizon de temps:",
+           #       choices=c("Historique (1950-2020)", "2041-2070 (2050)", "2071-2100 (2080)" )),
 
 ###Percentile
       sliderInput("Percentile", "Séléctionez le percentile:",
@@ -57,13 +57,64 @@ shinyServer (
     ),
     
     mainPanel(
+###Tabs Panel for Time Horizont      
       tabsetPanel(
-        tabPanel("Scenario d'émissions modérées (RCP4.5)", 
-                 basicPage(
-                   img(src='image1.png', align="left"))),
-        tabPanel("Scenario d'emissions élevées (RCP8.5)", 
-                 basicPage(
-                   img(src='image2.png', align="left")))
+        tabPanel("Historique (1950-2020)", 
+                 
+### Columns for emissions scenarios 
+                fluidRow(
+                  column(10,
+                         wellPanel(p("Historique (1950-2020)"))
+                )),
+                 fluidRow(
+                   column(6, offset = 0,
+                          wellPanel(p("Scenario d'émissions modérées (RCP4.5)"),
+                          img(src='image1.png', width="300px", align="center"),
+                          br(),
+                          img(src='image2.png', width="300px", align="center"))),
+                   column(6, offset = 0,
+                          wellPanel(p("Scenario d'émissions modérées (RCP4.5)"),
+                                    img(src='image1.png', width="300px", align="center"),
+                                    br(),
+                                    img(src='image2.png', width="300px", align="center"))
+                          )
+                   )),
+        tabPanel("2041-2070 (2050)", 
+                 fluidRow(
+                   column(10,
+                          wellPanel(p("2041-2070 (2050)"))
+                   )),
+                 fluidRow(
+                   column(6, offset = 0,
+                          wellPanel(p("Scenario d'émissions modérées (RCP4.5)"),
+                                    img(src='image1.png', width="300px", align="center"),
+                                    br(),
+                                    img(src='image2.png', width="300px", align="center"))),
+                   column(6, offset = 0,
+                          wellPanel(p("Scenario d'émissions modérées (RCP4.5)"),
+                                    img(src='image1.png', width="300px", align="center"),
+                                    br(),
+                                    img(src='image2.png', width="300px", align="center"))
+                   )
+                 )),
+        tabPanel("2071-2100 (2080)", 
+                 fluidRow(
+                   column(10,
+                          wellPanel(p("2071-2100 (2080)"))
+                   )),
+                 fluidRow(
+                   column(6, offset = 0,
+                          wellPanel(p("Scenario d'émissions modérées (RCP4.5)"),
+                                    img(src='image1.png', width="300px", align="center"),
+                                    br(),
+                                    img(src='image2.png', width="300px", align="center"))),
+                   column(6, offset = 0,
+                          wellPanel(p("Scenario d'émissions modérées (RCP4.5)"),
+                                    img(src='image1.png', width="300px", align="center"),
+                                    br(),
+                                    img(src='image2.png', width="300px", align="center"))
+                   )
+                 ))
         )
       #img(src='image2.png', align="right")
       #imageOutput("myImage")

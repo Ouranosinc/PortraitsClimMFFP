@@ -24,7 +24,32 @@ shinyServer (
                  choices=c("Domaines et sous-domaines bioclimatiques", "Régions et sous-région écologiques", 
                            "Territoires guides", "Secteurs des opérations régionales",
                            "Régions forestières", "Unités d’aménagement (UA)")),
-      
+      conditionalPanel(condition = "input.Echele == 'Domaines et sous-domaines bioclimatiques'",
+                 selectInput("Domaines", "Séléctionez le domaine ou sous-domaine:",
+                             choices=c("Janvier", "Février", "Mars", "Avril","Mai","Juin",
+                                       "Julliet","Aout","Septembre","Octobre","Novembre","Decembre"))),
+      conditionalPanel(condition = "input.Echele == 'Régions et sous-région écologiques'",
+                selectInput("RegEcol", "Séléctionez la région ou sous-région:",
+                            choices=c("Janvier", "Février", "Mars", "Avril","Mai","Juin",
+                                      "Julliet","Aout","Septembre","Octobre","Novembre","Decembre"))),
+      conditionalPanel(condition = "input.Echele == 'Territoires guides'",
+                selectInput("Terriotoires", "Séléctionez le territoire:",
+                            choices=c("Janvier", "Février", "Mars", "Avril","Mai","Juin",
+                                      "Julliet","Aout","Septembre","Octobre","Novembre","Decembre"))),
+      conditionalPanel(condition = "input.Echele == 'Secteurs des opérations régionales'",
+                selectInput("Secteurs", "Séléctionez le secteur:",
+                            choices=c("Janvier", "Février", "Mars", "Avril","Mai","Juin",
+                                      "Julliet","Aout","Septembre","Octobre","Novembre","Decembre"))),                
+      conditionalPanel(condition = "input.Echele == 'Régions forestières'",
+                 selectInput("REgForest", "Séléctionez la région:",
+                             choices=c("Janvier", "Février", "Mars", "Avril","Mai","Juin",
+                                       "Julliet","Aout","Septembre","Octobre","Novembre","Decembre"))),                
+      conditionalPanel(condition = "input.Echele == 'Unités d’aménagement (UA)'",
+                 selectInput("UA", "Séléctionez l'unité:",
+                             choices=c("Janvier", "Février", "Mars", "Avril","Mai","Juin",
+                                       "Julliet","Aout","Septembre","Octobre","Novembre","Decembre"))),                
+
+                      
 ###Saisonalité
       selectInput("Saisonalite", "Séléctionez la saisonalité:",
                   choices=c("Annuel", "Saissioniers", "Mensuel" )),
@@ -59,12 +84,12 @@ shinyServer (
     mainPanel(
 ###Tabs Panel for Time Horizont      
       tabsetPanel(
-        tabPanel("Historique (1950-2020)", 
+        tabPanel("Historique (1980-2010)", 
                  
 ### Columns for emissions scenarios 
                 fluidRow(
                   column(10,
-                         wellPanel(p("Historique (1950-2020)"))
+                         wellPanel(p("Historique (1980-2010)"))
                 )),
                  fluidRow(
                    column(6, offset = 0,
@@ -73,7 +98,7 @@ shinyServer (
                           br(),
                           img(src='image2.png', width="300px", align="center"))),
                    column(6, offset = 0,
-                          wellPanel(p("Scenario d'émissions modérées (RCP4.5)"),
+                          wellPanel(p("Scenario d'émissions élevées (RCP8.5)"),
                                     img(src='image1.png', width="300px", align="center"),
                                     br(),
                                     img(src='image2.png', width="300px", align="center"))
@@ -91,7 +116,7 @@ shinyServer (
                                     br(),
                                     img(src='image2.png', width="300px", align="center"))),
                    column(6, offset = 0,
-                          wellPanel(p("Scenario d'émissions modérées (RCP4.5)"),
+                          wellPanel(p("Scenario d'émissions élevées (RCP8.5)"),
                                     img(src='image1.png', width="300px", align="center"),
                                     br(),
                                     img(src='image2.png', width="300px", align="center"))
@@ -109,7 +134,7 @@ shinyServer (
                                     br(),
                                     img(src='image2.png', width="300px", align="center"))),
                    column(6, offset = 0,
-                          wellPanel(p("Scenario d'émissions modérées (RCP4.5)"),
+                          wellPanel(p("Scenario d'émissions élevées (RCP8.5)"),
                                     img(src='image1.png', width="300px", align="center"),
                                     br(),
                                     img(src='image2.png', width="300px", align="center"))

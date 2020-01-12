@@ -12,7 +12,7 @@ shinyServer (
                             "Degrés-jours de croissance", "Évènements gel-dégel", "Saison de croissance")),
       conditionalPanel(condition = "input.Variable == 'Températures moyennes, min et max'",
                        actionButton("Moyenne", "Températures moyennes (°C)"),
-                       actionButton("Maximum", "Moyenne des température maximales quotidiennes (°C)"),
+                       actionButton("Maximum", "Moyenne des températures maximales quotidiennes (°C)"),
                        actionButton("Minimum", "Moyenne des températures minimales quotidiennes (°C)")),
       conditionalPanel(condition = "input.Variable == 'Précipitations totales et sous forme de neige'",
                        actionButton("PrecTotale", "Précipitations totales (mm)"),
@@ -44,15 +44,15 @@ shinyServer (
                              choices=c("01171", "01272"))),                
 
                       
-###Saisonalité
-      selectInput("Saisonalite", "Séléctionez la saisonalité:",
-                  choices=c("Annuel", "Saissioniers", "Mensuel" )),
-      conditionalPanel(condition = "input.Saisonalite == 'Saissioniers'",
+###Saisonnalité
+      selectInput("Saisonnalite", "Séléctionez la saisonnalité:",
+                  choices=c("Annuel", "Saissoniers", "Mensuel" )),
+      conditionalPanel(condition = "input.Saisonnalite == 'Saissoniers'",
                        actionButton("Hiver", "Hiver"),
                        actionButton("Printemps", "Printemps"),
                        actionButton("Été", "Été"),
                        actionButton("Automne", "Automne")),
-      conditionalPanel(condition = "input.Saisonalite == 'Mensuel'",
+      conditionalPanel(condition = "input.Saisonnalite == 'Mensuel'",
                        selectInput("Mois", "Séléctionez le mois:",
                                    choices=c("Janvier", "Février", "Mars", "Avril","Mai","Juin",
                                              "Julliet","Aout","Septembre","Octobre","Novembre","Decembre"))

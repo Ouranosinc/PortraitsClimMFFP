@@ -6,6 +6,30 @@ shinyServer (
     headerPanel("Portraits Climatiques du Québec - MFFP"),
     sidebarPanel(
 
+###Echele spatial      
+      selectInput("Echele", "Séléctionez l'échele:",
+                  choices=c("Domaines et sous-domaines bioclimatiques", "Régions et sous-région écologiques", 
+                            "Territoires guides", "Secteurs des opérations régionales",
+                            "Régions forestières", "Unités d’aménagement (UA)")),
+      conditionalPanel(condition = "input.Echele == 'Domaines et sous-domaines bioclimatiques'",
+                       selectInput("Domaines", "Séléctionez le domaine ou sous-domaine:",
+                                   choices=c("Golfe du Saint-Laurent", "Pessiere a lichens", "Toundra arctique arbustive" ))),
+      conditionalPanel(condition = "input.Echele == 'Régions et sous-région écologiques'",
+                       selectInput("RegEcol", "Séléctionez la région ou sous-région:",
+                                   choices=c("Collines ceinturant le lac Saint-Jean", "Coteau de l'Estrie" ))),
+      conditionalPanel(condition = "input.Echele == 'Territoires guides'",
+                       selectInput("Terriotoires", "Séléctionez le territoire:",
+                                   choices=c("1a", "2a"))),
+      conditionalPanel(condition = "input.Echele == 'Secteurs des opérations régionales'",
+                       selectInput("Secteurs", "Séléctionez le secteur:",
+                                   choices=c("Centre du Quebec", "Nord-est"))),                
+      conditionalPanel(condition = "input.Echele == 'Régions forestières'",
+                       selectInput("REgForest", "Séléctionez la région:",
+                                   choices=c("Abitibi-Temiscamingue", "Bas-Saint-Laurent)"))),                
+      conditionalPanel(condition = "input.Echele == 'Unités d’aménagement (UA)'",
+                       selectInput("UA", "Séléctionez l'unité:",
+                                   choices=c("01171", "01272"))),         
+      
 ###Variable
        selectInput("Variable", "Séléctionez la variable climatique:",
                   choices=c("Températures moyennes, min et max","Précipitations totales et sous forme de neige",
@@ -19,29 +43,7 @@ shinyServer (
                        actionButton("Neige", "Précipitations sous forme de neige (cm)")),
       br(),
       
-###Echele spatial      
-      selectInput("Echele", "Séléctionez l'échele:",
-                 choices=c("Domaines et sous-domaines bioclimatiques", "Régions et sous-région écologiques", 
-                           "Territoires guides", "Secteurs des opérations régionales",
-                           "Régions forestières", "Unités d’aménagement (UA)")),
-      conditionalPanel(condition = "input.Echele == 'Domaines et sous-domaines bioclimatiques'",
-                 selectInput("Domaines", "Séléctionez le domaine ou sous-domaine:",
-                             choices=c("Golfe du Saint-Laurent", "Pessiere a lichens", "Toundra arctique arbustive" ))),
-      conditionalPanel(condition = "input.Echele == 'Régions et sous-région écologiques'",
-                selectInput("RegEcol", "Séléctionez la région ou sous-région:",
-                            choices=c("Collines ceinturant le lac Saint-Jean", "Coteau de l'Estrie" ))),
-      conditionalPanel(condition = "input.Echele == 'Territoires guides'",
-                selectInput("Terriotoires", "Séléctionez le territoire:",
-                            choices=c("1a", "2a"))),
-      conditionalPanel(condition = "input.Echele == 'Secteurs des opérations régionales'",
-                selectInput("Secteurs", "Séléctionez le secteur:",
-                            choices=c("Centre du Quebec", "Nord-est"))),                
-      conditionalPanel(condition = "input.Echele == 'Régions forestières'",
-                 selectInput("REgForest", "Séléctionez la région:",
-                             choices=c("Abitibi-Temiscamingue", "Bas-Saint-Laurent)"))),                
-      conditionalPanel(condition = "input.Echele == 'Unités d’aménagement (UA)'",
-                 selectInput("UA", "Séléctionez l'unité:",
-                             choices=c("01171", "01272"))),                
+             
 
                       
 ###Saisonnalité
@@ -133,7 +135,44 @@ shinyServer (
                                     br(),
                                     img(src='image2.png', width="300px", align="center"))
                    )
+                 )),
+        tabPanel("Graphique", 
+                 fluidRow(
+                   column(10,
+                          wellPanel(p("Graphique"))
+                   )),
+                 fluidRow(
+                   column(6, offset = 0,
+                          wellPanel(p("Scenario d'émissions modérées (RCP4.5)"),
+                                    img(src='image1.png', width="300px", align="center"),
+                                    br(),
+                                    img(src='image2.png', width="300px", align="center"))),
+                   column(6, offset = 0,
+                          wellPanel(p("Scenario d'émissions élevées (RCP8.5)"),
+                                    img(src='image1.png', width="300px", align="center"),
+                                    br(),
+                                    img(src='image2.png', width="300px", align="center"))
+                   )
+                 )),
+        tabPanel("Sommaire", 
+                 fluidRow(
+                   column(10,
+                          wellPanel(p("Graphique"))
+                   )),
+                 fluidRow(
+                   column(6, offset = 0,
+                          wellPanel(p("Scenario d'émissions modérées (RCP4.5)"),
+                                    img(src='image1.png', width="300px", align="center"),
+                                    br(),
+                                    img(src='image2.png', width="300px", align="center"))),
+                   column(6, offset = 0,
+                          wellPanel(p("Scenario d'émissions élevées (RCP8.5)"),
+                                    img(src='image1.png', width="300px", align="center"),
+                                    br(),
+                                    img(src='image2.png', width="300px", align="center"))
+                   )
                  ))
+
         )
       #img(src='image2.png', align="right")
       #imageOutput("myImage")

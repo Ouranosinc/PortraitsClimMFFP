@@ -3,7 +3,7 @@ shinyServer (
   fluidPage( 
     #themeSelector(),
     
-    headerPanel("Portraits Climatiques du Québec - MFFP"),
+    headerPanel(title=div(img(src='MFFP.png', width="100px", align="left"), br(), "Portraits Climatiques du Québec")),
     sidebarPanel(
 
 ###Echele spatial      
@@ -84,45 +84,31 @@ shinyServer (
                  
 ### Columns for emissions scenarios 
                 fluidRow(
-                  column(10,
-                         wellPanel(p("Historique (1980-2010)"))
-                )),
-                 fluidRow(
                    column(6, offset = 0,
                           wellPanel(p("Scenario d'émissions modérées (RCP4.5)"),
-                          img(src='image1.png', width="300px", align="center"),
-                          br(),
-                          img(src='image2.png', width="300px", align="center"))),
+                          img(src='image1.png', width="500px", align="center")
+                         ))),
+                  fluidRow( 
                    column(6, offset = 0,
                           wellPanel(p("Scenario d'émissions élevées (RCP8.5)"),
-                                    img(src='image1.png', width="300px", align="center"),
-                                    br(),
-                                    img(src='image2.png', width="300px", align="center"))
-                          )
-                   )),
+                                    img(src='image1.png', width="500px", align="center")
+                                    )
+                          ))
+                   ),
         tabPanel("2041-2070 (2050)", 
-                 fluidRow(
-                   column(10,
-                          wellPanel(p("2041-2070 (2050)"))
-                   )),
+                 
                  fluidRow(
                    column(6, offset = 0,
                           wellPanel(p("Scenario d'émissions modérées (RCP4.5)"),
-                                    img(src='image1.png', width="300px", align="center"),
-                                    br(),
-                                    img(src='image2.png', width="300px", align="center"))),
+                                    img(src='image1.png', width="400px", align="center")
+                                    )),
                    column(6, offset = 0,
                           wellPanel(p("Scenario d'émissions élevées (RCP8.5)"),
-                                    img(src='image1.png', width="300px", align="center"),
-                                    br(),
-                                    img(src='image2.png', width="300px", align="center"))
+                                    img(src='image1.png', width="400px", align="center"))
                    )
                  )),
         tabPanel("2071-2100 (2080)", 
-                 fluidRow(
-                   column(10,
-                          wellPanel(p("2071-2100 (2080)"))
-                   )),
+                 
                  fluidRow(
                    column(6, offset = 0,
                           wellPanel(p("Scenario d'émissions modérées (RCP4.5)"),
@@ -136,24 +122,10 @@ shinyServer (
                                     img(src='image2.png', width="300px", align="center"))
                    )
                  )),
-        tabPanel("Graphique", 
-                 fluidRow(
-                   column(10,
-                          wellPanel(p("Graphique"))
-                   )),
-                 fluidRow(
-                   column(6, offset = 0,
-                          wellPanel(p("Scenario d'émissions modérées (RCP4.5)"),
-                                    img(src='image1.png', width="300px", align="center"),
+        tabPanel(div(icon("calendar"), "Graphique"),
                                     br(),
-                                    img(src='image2.png', width="300px", align="center"))),
-                   column(6, offset = 0,
-                          wellPanel(p("Scenario d'émissions élevées (RCP8.5)"),
-                                    img(src='image1.png', width="300px", align="center"),
-                                    br(),
-                                    img(src='image2.png', width="300px", align="center"))
-                   )
-                 )),
+                                    img(src='temMoy.png', width="900px", align="center")),
+
         tabPanel("Sommaire", 
                  fluidRow(
                    column(10,

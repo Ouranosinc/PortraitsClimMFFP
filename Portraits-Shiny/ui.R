@@ -18,8 +18,8 @@ shinyServer (
                        selectInput("RegEcol", "Séléctionez la région ou sous-région:",
                                    choices=c("Collines ceinturant le lac Saint-Jean", "Coteau de l'Estrie" ))),
       conditionalPanel(condition = "input.Echele == 'Territoires guides'",
-                       selectInput("Terriotoires", "Séléctionez le territoire:",
-                                   choices=c("1a", "2a"))),
+                       selectInput("Territoires", "Séléctionez le territoire:",
+                                   choices=c("Tous les Territoires", "1a", "2a"))),
       conditionalPanel(condition = "input.Echele == 'Secteurs des opérations régionales'",
                        selectInput("Secteurs", "Séléctionez le secteur:",
                                    choices=c("Centre du Quebec", "Nord-est"))),                
@@ -78,7 +78,7 @@ shinyServer (
     mainPanel(
 ###Tabs Panel for Time Horizont 
       tabsetPanel(
-       tabPanel("2041-2070", 
+       tabPanel(div(icon("calendar"), "2041-2070"), 
                  
                  fluidRow(
                    column(6, offset = 0,
@@ -86,9 +86,11 @@ shinyServer (
                                     img(src='image1.png', width="400px", align="center"))),
                    column(6, offset = 0,
                           wellPanel(p("Données pour l'Horizon 2041-2070"),
-                                    img(src='image1.png', width="400px", align="center")))
+                                    #img(src='image1.png', width="400px", align="center")
+                                    imageOutput("myImage")
+                                    ))
                  )),
-        tabPanel("2071-2100", 
+        tabPanel(div(icon("calendar"),"2071-2100"), 
                  
                  fluidRow(
                    column(6, offset = 0,
@@ -98,11 +100,11 @@ shinyServer (
                           wellPanel(p("Données pour l'Horizon 2071-2100"),
                                     img(src='image1.png', width="400px", align="center")))
                  )),
-        tabPanel(div(icon("graph up"), "Graphique"),
+        tabPanel(div(icon("image"), "Graphique"),
                                     br(),
                                     img(src='temMoy.png', width="900px", align="center")),
 
-        tabPanel("Sommaire", 
+        tabPanel(div(icon("table"),"Sommaire"), 
                  br(),
                  img(src='sommaire.png', width="900px", align="center"))
 

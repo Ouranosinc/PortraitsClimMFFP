@@ -7,7 +7,7 @@ shinyServer (
     sidebarPanel(
 
 ###Echele spatial      
-      selectInput("Echele", "Séléctionez l'échele:",
+      selectInput("Echele", "Séléctionez l'échele spatiale:",
                   choices=c("Domaines et sous-domaines bioclimatiques", "Régions et sous-région écologiques", 
                             "Territoires guides", "Secteurs des opérations régionales",
                             "Régions forestières", "Unités d’aménagement (UA)")),
@@ -44,8 +44,6 @@ shinyServer (
       br(),
       
              
-
-                      
 ###Saisonnalité
       selectInput("Saisonnalite", "Séléctionez la saisonnalité:",
                   choices=c("Annuel", "Saissoniers", "Mensuel" )),
@@ -60,12 +58,14 @@ shinyServer (
                                              "Julliet","Aout","Septembre","Octobre","Novembre","Decembre"))
                        ),
 
-###Test input
-     # numericInput("n", "n", 1),
-
 ###Scenario
      # selectInput("Scenario", "Séléctionez le scenario d'émissions:",
       #            choices=c("Modérées (RCP4.5)", "Élevées (RCP8.5)" )),
+      br(),
+      h4("Séléctionez le scenario d'émissions:"),
+      br(),
+      actionButton("Moderees", "Modérées (RCP4.5)"),
+      actionButton("Elevees", "Élevées (RCP8.5)"),
 
 ###Temps
      # selectInput("Horizon", "Séléctionez l'horizon de temps:",
@@ -78,34 +78,17 @@ shinyServer (
     ),
     
     mainPanel(
-###Tabs Panel for Time Horizont      
+###Tabs Panel for Time Horizont 
       tabsetPanel(
-        tabPanel("Historique (1980-2010)", 
-                 
-### Columns for emissions scenarios 
-                fluidRow(
-                   column(6, offset = 0,
-                          wellPanel(p("Scenario d'émissions modérées (RCP4.5)"),
-                          img(src='image1.png', width="500px", align="center")
-                         ))),
-                  fluidRow( 
-                   column(6, offset = 0,
-                          wellPanel(p("Scenario d'émissions élevées (RCP8.5)"),
-                                    img(src='image1.png', width="500px", align="center")
-                                    )
-                          ))
-                   ),
-        tabPanel("2041-2070 (2050)", 
+       tabPanel("2041-2070 (2050)", 
                  
                  fluidRow(
                    column(6, offset = 0,
                           wellPanel(p("Scenario d'émissions modérées (RCP4.5)"),
-                                    img(src='image1.png', width="400px", align="center")
-                                    )),
+                                    img(src='image1.png', width="400px", align="center"))),
                    column(6, offset = 0,
                           wellPanel(p("Scenario d'émissions élevées (RCP8.5)"),
-                                    img(src='image1.png', width="400px", align="center"))
-                   )
+                                    img(src='image1.png', width="400px", align="center")))
                  )),
         tabPanel("2071-2100 (2080)", 
                  
@@ -119,18 +102,13 @@ shinyServer (
                           wellPanel(p("Scenario d'émissions élevées (RCP8.5)"),
                                     img(src='image1.png', width="300px", align="center"),
                                     br(),
-                                    img(src='image2.png', width="300px", align="center"))
-                   )
+                                    img(src='image2.png', width="300px", align="center")))
                  )),
-        tabPanel(div(icon("calendar"), "Graphique"),
+        tabPanel(div(icon("graph up"), "Graphique"),
                                     br(),
                                     img(src='temMoy.png', width="900px", align="center")),
 
         tabPanel("Sommaire", 
-                 fluidRow(
-                   column(10,
-                          wellPanel(p("Graphique"))
-                   )),
                  fluidRow(
                    column(6, offset = 0,
                           wellPanel(p("Scenario d'émissions modérées (RCP4.5)"),
@@ -141,8 +119,7 @@ shinyServer (
                           wellPanel(p("Scenario d'émissions élevées (RCP8.5)"),
                                     img(src='image1.png', width="300px", align="center"),
                                     br(),
-                                    img(src='image2.png', width="300px", align="center"))
-                   )
+                                    img(src='image2.png', width="300px", align="center")))
                  ))
 
         )

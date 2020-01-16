@@ -61,12 +61,10 @@ shinyServer (
 ###Scenario
      # selectInput("Scenario", "Séléctionez le scenario d'émissions:",
       #            choices=c("Modérées (RCP4.5)", "Élevées (RCP8.5)" )),
-      br(),
-      h4("Séléctionez le scenario d'émissions:"),
-      br(),
+      h5(tags$b("Séléctionez le scenario d'émissions:")),
       actionButton("Moderees", "Modérées (RCP4.5)"),
       actionButton("Elevees", "Élevées (RCP8.5)"),
-
+    
 ###Temps
      # selectInput("Horizon", "Séléctionez l'horizon de temps:",
            #       choices=c("Historique (1950-2020)", "2041-2070 (2050)", "2071-2100 (2080)" )),
@@ -80,47 +78,33 @@ shinyServer (
     mainPanel(
 ###Tabs Panel for Time Horizont 
       tabsetPanel(
-       tabPanel("2041-2070 (2050)", 
+       tabPanel("2041-2070", 
                  
                  fluidRow(
                    column(6, offset = 0,
-                          wellPanel(p("Scenario d'émissions modérées (RCP4.5)"),
+                          wellPanel(p("Données Historiques"),
                                     img(src='image1.png', width="400px", align="center"))),
                    column(6, offset = 0,
-                          wellPanel(p("Scenario d'émissions élevées (RCP8.5)"),
+                          wellPanel(p("Données pour l'Horizon 2041-2070"),
                                     img(src='image1.png', width="400px", align="center")))
                  )),
-        tabPanel("2071-2100 (2080)", 
+        tabPanel("2071-2100", 
                  
                  fluidRow(
                    column(6, offset = 0,
-                          wellPanel(p("Scenario d'émissions modérées (RCP4.5)"),
-                                    img(src='image1.png', width="300px", align="center"),
-                                    br(),
-                                    img(src='image2.png', width="300px", align="center"))),
+                          wellPanel(p("Données Historiques"),
+                                    img(src='image1.png', width="400px", align="center"))),
                    column(6, offset = 0,
-                          wellPanel(p("Scenario d'émissions élevées (RCP8.5)"),
-                                    img(src='image1.png', width="300px", align="center"),
-                                    br(),
-                                    img(src='image2.png', width="300px", align="center")))
+                          wellPanel(p("Données pour l'Horizon 2071-2100"),
+                                    img(src='image1.png', width="400px", align="center")))
                  )),
         tabPanel(div(icon("graph up"), "Graphique"),
                                     br(),
                                     img(src='temMoy.png', width="900px", align="center")),
 
         tabPanel("Sommaire", 
-                 fluidRow(
-                   column(6, offset = 0,
-                          wellPanel(p("Scenario d'émissions modérées (RCP4.5)"),
-                                    img(src='image1.png', width="300px", align="center"),
-                                    br(),
-                                    img(src='image2.png', width="300px", align="center"))),
-                   column(6, offset = 0,
-                          wellPanel(p("Scenario d'émissions élevées (RCP8.5)"),
-                                    img(src='image1.png', width="300px", align="center"),
-                                    br(),
-                                    img(src='image2.png', width="300px", align="center")))
-                 ))
+                 br(),
+                 img(src='sommaire.png', width="900px", align="center"))
 
         )
       #img(src='image2.png', align="right")

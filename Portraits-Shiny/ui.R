@@ -83,11 +83,11 @@ shinyServer (
                  fluidRow(
                    column(6, offset = 0,
                           wellPanel(p("Données Historiques"),
-                                    img(src='image1.png', width="400px", align="center"))),
+                                    imageOutput("myImage"))),
                    column(6, offset = 0,
                           wellPanel(p("Données pour l'Horizon 2041-2070"),
                                     #img(src='image1.png', width="400px", align="center")
-                                    imageOutput("myImage")
+                                    imageOutput("myImage2")
                                     ))
                  )),
         tabPanel(div(icon("calendar"),"2071-2100"), 

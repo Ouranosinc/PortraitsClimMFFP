@@ -194,7 +194,9 @@ shinyServer (
                           wellPanel(p("Données pour l'Horizon 2041-2070"),
                                     #img(src='image1.png', width="400px", align="center")
                                     imageOutput("myImage2")))
-                 )),
+                 ),
+                div(icon("download"), tags$a(href="Moyenne.geojson", "Télécharger GeoJson"))
+                ),
         tabPanel(div(icon("calendar"),"2071-2100"), 
                  
                  fluidRow(
@@ -204,16 +206,22 @@ shinyServer (
                    column(6, offset = 0,
                           wellPanel(p("Données pour l'Horizon 2071-2100"),
                                     imageOutput("myImage4")))
-                 )),
+                 ),
+                 div(icon("download"), tags$a(href="Moyenne.geojson", "Télécharger GeoJson"))
+                 ),
         tabPanel(div(icon("image"), "Graphique"),
                                     br(),
                                     img(src='temMoy.png', width="900px", align="center"),
-                                    downloadButton("dowloadData1", "Télécharger")),
+                                    #downloadButton("dowloadData", "Download")
+                 div(icon("download"), tags$a(href="Moyenne.csv", "Télécharger CSV"))
+                 ),
 
         tabPanel(div(icon("table"),"Sommaire"), 
                  br(),
                  img(src='sommaire.png', width="900px", align="center"),
-                 downloadButton("dowloadData2", "Télécharger"))
+                # downloadButton("dowloadData2", "Télécharger")
+                div(icon("download"), tags$a(href="Moyenne2.csv", "Télécharger CSV"))
+                 )
 
         )
     )

@@ -42,17 +42,20 @@ shinyServer(
       
     }, deleteFile = FALSE)
   
-### Download fiels 
-  output$downloadData1 <- downloadHandler(
-    filename = function() {
-      paste(input$Variable, ".csv", sep = "")
+### Download files 
+  output$downloadData <- downloadHandler(
+    filename = "Moyenne.csv",
+    content = function(file) { 
+      file.copy("Moyenne.csv",file)
     }
     )
-  output$downloadData2 <- downloadHandler(
-    filename = function() {
-      paste(input$Variable, "2.csv", sep = "")
-    }
-  )
+  
+  # output$downloadData2 <- downloadHandler(
+  #   filename = "Moyenne.csv",
+  #   content = function(file) { 
+  #     file.copy("www/Moyenne.csv",file)
+  #   }
+  # )
   
   }
 )

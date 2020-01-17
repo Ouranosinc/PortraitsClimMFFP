@@ -41,5 +41,18 @@ shinyServer(
            alt = paste("Echele Spatiale ", input$Territoires))
       
     }, deleteFile = FALSE)
+    
+    ### Download fiels 
+    output$downloadData1 <- downloadHandler(
+      filename = function() {
+        paste(input$Variable, ".csv", sep = "")
+      }
+    )
+    output$downloadData2 <- downloadHandler(
+      filename = function() {
+        paste(input$Variable, "2.csv", sep = "")
+      }
+    )
+    
   }
 )

@@ -207,15 +207,15 @@ shinyServer (
                  )),
         tabPanel(div(icon("image"), "Graphique"),
                                     br(),
-                                    img(src='temMoy.png', width="900px", align="center")),
+                                    img(src='temMoy.png', width="900px", align="center"),
+                                    downloadButton("dowloadData1", "Télécharger")),
 
         tabPanel(div(icon("table"),"Sommaire"), 
                  br(),
-                 img(src='sommaire.png', width="900px", align="center"))
+                 img(src='sommaire.png', width="900px", align="center"),
+                 downloadButton("dowloadData2", "Télécharger"))
 
         )
-      #img(src='image2.png', align="right")
-      #imageOutput("myImage")
     )
   )
 )

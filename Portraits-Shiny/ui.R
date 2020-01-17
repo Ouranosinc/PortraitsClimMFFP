@@ -169,11 +169,14 @@ shinyServer (
 ###Scenario
      # selectInput("Scenario", "Séléctionez le scenario d'émissions:",
       #            choices=c("Modérées (RCP4.5)", "Élevées (RCP8.5)" )),
-      h5(tags$b("Séléctionez le scenario d'émissions:")),
-      actionButton("Moderees", "Modérées (RCP4.5)"),
-      actionButton("Elevees", "Élevées (RCP8.5)"),
-      br(),
-      br(),
+radioButtons("Scenario", "Séléctionez le scenario d'émissions:",
+             c("Modérées (RCP4.5)" = "Moderees",
+               "Élevées (RCP8.5)" = "Elevees")),
+      # h5(tags$b("Séléctionez le scenario d'émissions:")),
+      # actionButton("Moderees", "Modérées (RCP4.5)"),
+      # actionButton("Elevees", "Élevées (RCP8.5)"),
+      # br(),
+      # br(),
     
 ###Percentile
       sliderInput("Percentile", "Séléctionez le percentile:",

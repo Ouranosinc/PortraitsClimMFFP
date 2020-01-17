@@ -14,7 +14,7 @@ shinyServer(
     output$myImage2 <- renderImage({
       # When input$n is 3, filename is ./images/image3.jpeg
       filename <- normalizePath(file.path('./www',
-                                          paste(input$Territoires,"Moyenne_Annuel_2050_Elevees.png", sep='')))
+                                          paste(input$Territoires,"Moyenne_Annuel_2050_",input$Scenario,".png", sep='')))
       
       # Return a list containing the filename and alt text
       list(src = filename,
@@ -34,7 +34,7 @@ shinyServer(
     output$myImage4 <- renderImage({
       # When input$n is 3, filename is ./images/image3.jpeg
       filename <- normalizePath(file.path('./www',
-                                          paste(input$Territoires,"Moyenne_Annuel_2080_Elevees.png", sep='')))
+                                          paste(input$Territoires,"Moyenne_Annuel_2080_",input$Scenario,".png", sep='')))
       
       # Return a list containing the filename and alt text
       list(src = filename,

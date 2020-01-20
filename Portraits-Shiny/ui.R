@@ -118,13 +118,13 @@ shinyServer (
                                    choices=c('Sud-Ouest', 'Centre du Québec', 'Nord-est',
                                              'Secteur métropolitain et sud', 'Sud-est', 'Nord-ouest'))),                
       conditionalPanel(condition = "input.Echele == 'Régions forestières'",
-                       selectInput("REgForest", "Séléctionez la région:",
-                                   choices=c('BAS-SAINT-LAURENT', 'SAGUENAY -LAC-SAINT-JEAN',
-                                             'CAPITALE-NATIONALE-CHAUDIÈRE-APPALACHES',
-                                             'MAURICIE-CENTRE-DU-QUÉBEC', 'ESTRIE-MONTÉRÉGIE-LAVAL-MONTRÉAL',
-                                             'OUTAOUAIS', 'ABITIBI-TEMISCAMINGUE', 'COTE-NORD',
-                                             'NORD-DU-QUEBEC', 'GASPESIE-ILES-DE-LA-MADELEINE', 'LANAUDIERE',
-                                             'LAURENTIDES'
+                       selectInput("RegForest", "Séléctionez la région:",
+                                   choices=c('Toutes les Régions', 'Bas-Saint-Laurent', 'Saguenay -Lac-Saint-Jean',
+                                             'Capitale-Nationale-Chaudière-Appalaches',
+                                             'Mauricie-Centre-Du-Québec', 'Estrie-Montérégie-Laval-Montréal',
+                                             'Outaouais', 'Abitibi-Témiscamingue', 'Cote-Nord',
+                                             'Nord-Du-Québec', 'Gaspésie-Iles-De-La-Madeleine', 'Lanaudière',
+                                             'Laurentides'
                                    ))),                
       conditionalPanel(condition = "input.Echele == 'Unités d’aménagement (UA)'",
                        selectInput("UA", "Séléctionez l'unité:",
@@ -198,6 +198,7 @@ radioButtons("Scenario", "Séléctionez le scenario d'émissions:",
                                     #img(src='image1.png', width="400px", align="center")
                                     imageOutput("myImage2")))
                  ),
+                fluidRow(img(src='echelletemp.png', width="300px", align="center")),
                 div(icon("download"), tags$a(href="Moyenne.geojson", "Télécharger GeoJson"))
                 ),
         tabPanel(div(icon("calendar"),"2071-2100"), 
@@ -210,6 +211,7 @@ radioButtons("Scenario", "Séléctionez le scenario d'émissions:",
                           wellPanel(p("Données pour l'Horizon 2071-2100"),
                                     imageOutput("myImage4")))
                  ),
+                 fluidRow(img(src='echelletemp.png', width="300px", align="center")),
                  div(icon("download"), tags$a(href="Moyenne.geojson", "Télécharger GeoJson"))
                  ),
         tabPanel(div(icon("image"), "Graphique"),

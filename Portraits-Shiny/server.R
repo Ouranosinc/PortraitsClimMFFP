@@ -1,14 +1,14 @@
 shinyServer(
   function(input, output, session){
     regfor <- reactive(input$RegForest)
-    terguid <- reactive(input$Territoires)
+    terrguid <- reactive(input$Territoires)
     dombio <- reactive(input$Domaines)
     sdombio <- reactive(input$Sous-domaines)
     regeco <- reactive(input$RegEcol)
     sregeco <- reactive(input$SousRegEcol)
     sec <- reactive(input$Secteurs)
     ua <- reactive(input$UA)
-    echelle <- reactive(input$Echelle)
+    echelle <- reactive(input$Echele)
     sousechelle <- reactive({ if (echelle() == "Régions forestières") {regfor()} 
                              else if (echelle() == "Territoires guides") {terrguid()}
       else if (echelle() == "Domaines bioclimatiques") {dombio()}
@@ -25,7 +25,7 @@ shinyServer(
     
     # if (input$Echelle == "Régions forestières") {
     output$myImage <- renderImage({
-      filename <- normalizePath(file.path('./www', paste(sousechelle(),"Moyenne_Annuel_Hist_Elevees.png", sep='')))
+      filename <- normalizePath(file.path('./www', paste(sousechelle(),"Moyenne_Annuel_Hist.png", sep='')))
       list(src = filename, alt = paste("Echele Spatiale ", sousechelle()))
       }, deleteFile = FALSE)
 
@@ -35,7 +35,7 @@ shinyServer(
      }, deleteFile = FALSE)
 
      output$myImage3 <- renderImage({
-      filename <- normalizePath(file.path('./www', paste(sousechelle(),"Moyenne_Annuel_Hist_Elevees.png", sep='')))
+      filename <- normalizePath(file.path('./www', paste(sousechelle(),"Moyenne_Annuel_Hist.png", sep='')))
       list(src = filename, alt = paste("Echele Spatiale ", sousechelle()))
     }, deleteFile = FALSE)
 

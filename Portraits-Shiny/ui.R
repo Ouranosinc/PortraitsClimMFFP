@@ -1,4 +1,4 @@
-library(shinythemes)
+#library(shinythemes)
 shinyServer (     
   fluidPage( 
     #themeSelector(),

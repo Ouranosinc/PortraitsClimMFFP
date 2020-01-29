@@ -23,17 +23,13 @@ names(TwoC)
 
 bins <- c(14, 12, 10, 8, 6, 4, 2, 0, -2, -4, -5)
 
-# colorNumeric(c("red", "green", "blue"), 1:10)
-# 
-# pal <- colorBin("RdYlBu", domain = TG$tg_mean, bins = bins)
-# pal1a <- colorBin("RdYlBu", domain = OneA$tg_mean, bins = bins)
-# pal2c <- colorBin("RdYlBu", domain = TwoC$tg_mean, bins = bins)
-# pal3d <- colorBin("RdYlBu", domain = ThreeD$tg_mean, bins = bins)
+ 
+pal <- colorBin("Spectral", domain = TG$tg_mean, bins = bins)
+pal1a <- colorBin("Spectral", domain = OneA$tg_mean, bins = bins)
+pal2c <- colorBin("Spectral", domain = TwoC$tg_mean, bins = bins)
+pal3d <- colorBin("Spectral", domain = ThreeD$tg_mean, bins = bins)
 
-pal <- colorNumeric(c("blue", "yellow", "red"), domain = TG$tg_mean, -5:14)
-pal1a <- colorNumeric(c("blue", "yellow", "red"), domain = OneA$tg_mean, -5:14)
-pal2c <- colorNumeric(c("blue", "yellow", "red"), domain = TG$tg_mean, -5:14)
-pal3d <- colorNumeric(c("blue", "yellow", "red"), domain = ThreeD$tg_mean, -5:14)
+
 
 labels <- sprintf(
   "<strong>%s</strong><br/>%g °C",

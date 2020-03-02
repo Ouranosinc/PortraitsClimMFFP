@@ -140,9 +140,13 @@ def latlon_regions(path_filename_shapefile):
     latlon_df = gpd.GeoDataFrame(latlon_df_0)
     latlon_df["geometry"] = [Point(lon, lat) for (lat,lon) in zip(latlon_df.lat, latlon_df.lon)]
     shape = gpd.read_file(json)
+    shape2 = shape[shape.name != 'NoneType']
     #Reading Shapefiles in right coordinate system
-    shape = shape.to_crs({'init': 'epsg:4326'})
-    latlon_res = gpd.sjoin(latlon_df, shape, op="within")
+    shape2 = shape2.to_crs({'init': 'epsg:4326'})
+    shape = 0
+    latlon_res = gpd.sjoin(latlon_df, shape2, op="within")
+    latlon_df = 0
+    shape2=0
     return latlon_res
 
 #### Clipping by region to plot static images   

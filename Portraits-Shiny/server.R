@@ -105,9 +105,9 @@ addmapr <- function(dataTG, vari, region, namer, period, scenario, percentile, a
       values <- c(-30, 25)
       print("title")}
     else if(vari == "tx_mean"){
-      pal <- colorNumeric("Spectral", domain = c(-28, 34))
+      pal <- colorNumeric("Spectral", domain = c(-28, 36))
       title <- sprintf("Température Max (°C) -%s", all_selec)
-      values <- c(-28, 34)
+      values <- c(-28, 36)
       print("title")}
     else if(vari == "prcptot"){
       pal <- colorNumeric("Spectral", domain = c(50, 1500))
@@ -271,7 +271,7 @@ function(input, output, session) {
         urlTemplate = "//{s}.tiles.mapbox.com/v3/jcheng.map-5ebohr46/{z}/{x}/{y}.png",
         attribution = 'Maps by <a href="http://www.mapbox.com/">Mapbox</a>'
       ) %>%
-      setView(lat = 45.6, lng= -70.5, zoom = 7)
+      setView(lat = 47.5, lng= -72.5, zoom = 7)
   })
   
   

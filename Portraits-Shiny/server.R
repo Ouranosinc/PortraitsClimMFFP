@@ -17,60 +17,72 @@ df <- read.table("www/table2.csv", header = TRUE, sep = ";")
 # setwd("C:\\Users\\marlop1\\Documents\\GitHub\\SuperZip")
 
 
-####### CONDITIONS FOR OPTIONS IN MAPS
-conditions <- function(horizon, scenario, percentile){
+####### CONDITIONS FOR HORIZON, SCENARIO, SEASON AND PERCENTILE IN MAPS
+conditions <- function(season2, horizon, scenario, percentile){
   if (horizon == 'Historique'){
-    all_selec <- "hist_p50"
-  } else  if (horizon == '2041-2070') {
-    if (scenario == "rcp45"){
-      if(percentile == "10"){
-        all_selec <- "t2050_rcp45_p10"
-      } else if(percentile == "50"){
-        all_selec <- "t2050_rcp45_p50"
-      } else if(percentile == "90"){
-        all_selec <- "t2050_rcp45_p90"}
-    } else if (scenario == "rcp85"){
-      if(percentile == "10"){
-        all_selec <- "t2050_rcp85_p10"
-      } else if(percentile == "50"){
-        all_selec <- "t2050_rcp85_p50"
-      } else if(percentile == "90"){
-        all_selec <- "t2050_rcp85_p90"}
-    } } else if (horizon == '2071-2100') {
-      if (scenario == "rcp45"){
-        if(percentile == "10"){
-          all_selec <- "t2080_rcp45_p10"
-        } else if(percentile == "50"){
-          all_selec <- "t2080_rcp45_p50"
-        } else if(percentile == "90"){
-          all_selec <- "t2080_rcp45_p90"}
-      } else if (scenario == "rcp85"){
-        if(percentile == "10"){
-          all_selec <- "t2080_rcp85_p10"
-        } else if(percentile == "50"){
-          all_selec <- "t2080_rcp85_p50"
-        } else if(percentile == "90"){
-          all_selec <- "t2080_rcp85_p90"}}}
+    all_selec <-  paste(season2,"hist_p50", sep="")} 
+  if (horizon == '2041-2070') {
+    horizon2 <- "t2050"
+    all_selec <- paste(season2, horizon2,"_",scenario,"_p", percentile, sep="")}
+  if (horizon == '2071-2100'){
+    horizon2 <- "t2080"
+    all_selec <- paste(season2, horizon2,"_",scenario,"_p", percentile, sep="")}  
+  print (all_selec)
   return(all_selec)}
 
+
+
+### CHANGING VARIABLE
+varif  <- function(Variable2){
+  if (Variable2 == "Précipitations sous forme de neige") {
+    vari <- "solidprcptot"
+    print ("button neige")}
+  if (Variable2 == "Précipitations totales") {
+    vari <- "prcptot"
+    print ("button precip")}
+  if (Variable2 == "Températures moyennes") {
+    vari <- "tg_mean"
+    print ("button tem avg")}
+  if (Variable2 == "Températures maximales") {
+    vari <- "tx_mean"
+    print ("Button tmax")}
+  if (Variable2 == "Températures minimales") {
+    vari <- "tn_mean"
+    print ("button t min")}
+  if (Variable2 == "Degrés-jours de croissance"){
+    vari <- "DJC"
+    print ("button djc")}
+  if (Variable2 == "Évènements gel-dégel"){
+    vari <- "dlyfrzthw"
+    print ("button GelDegel")}
+  if (Variable2 == "Saison de croissance"){
+    vari <- "growing_season_length"
+    print ("button Saison de croissance")}
+  return(vari)}
+
 ##### INTERMIDIATE STEP *** CHECK IF STILL NEED IT
-mapTG <- function(region, namer, vari, period, saison, scenario, percentile, all_selec){ 
+mapTG <- function(region, namer, vari, period, saison, scenario, percentile, all_selec, fname2){ 
   print (region)
-  dataTG <- load_json(region, vari, saison)
+  dataTG <- load_json(fname2) ### THIS STEP TAKES VERY LONG
   print ("dataTG" )
   vari <- vari
   addmapr(dataTG, vari, region, namer, period, scenario, percentile, all_selec) 
 }
 
-###### LOAD GEOJSON FILE
-load_json <- function (region, vari, saison){
+####### Get the name of the file
+fnamef <- function (region, vari, saison){
   #SUBSTITUTE ACCENTS
-  print ("load json")
   nameA <- str_replace_all(region, c( "é"= "e", "à"="a", "è"= "e", "ô" = "o", "ç"="c", "É"="E", "È"="E", "Î"="i", "Ç"="C"))
   print (nameA)
-  fname <- paste("www/",nameA,"_", vari, "_",saison, ".json",sep="")
-  print(fname)
-  geojsonio::geojson_read(fname, what = "sp")
+  fname3 <- paste("www/",nameA,"_", vari, "_",saison, ".json",sep="")
+  print(fname3)
+  return(fname3)}
+
+###### LOAD GEOJSON FILE
+load_json <- function (fname2){
+  print ("load json")
+  geojsonio::geojson_read(fname2, what = "sp")
+ # filename(nameA, vari, saison)
 }
 
 #### MODIFY MAP BASED ON SELECTION - LEAFLETPROXY
@@ -78,18 +90,19 @@ addmapr <- function(dataTG, vari, region, namer, period, scenario, percentile, a
     print (region)
     print (namer)
     print("all_selec")
+    #print(dataTG[[all_selec]])
     labels <- sprintf("Région: %s : %s", dataTG[[namer]], dataTG[[all_selec]]) 
     print ("labels")
     print ("values")
     if(vari == "tg_mean"){
-    pal <- colorNumeric("Spectral", domain = c(-25, 28))
+    pal <- colorNumeric("Spectral", domain = c(-26, 30))
     title <- sprintf("Température Moy (°C) -%s", all_selec)
-    values <- c(-25, 28)
+    values <- c(-25, 30)
     print("title")}
     else if(vari == "tn_mean"){
-      pal <- colorNumeric("Spectral", domain = c(-28, 23))
+      pal <- colorNumeric("Spectral", domain = c(-30, 25))
       title <- sprintf("Température Min (°C) -%s", all_selec)
-      values <- c(-28, 23)
+      values <- c(-30, 25)
       print("title")}
     else if(vari == "tx_mean"){
       pal <- colorNumeric("Spectral", domain = c(-28, 34))
@@ -112,14 +125,14 @@ addmapr <- function(dataTG, vari, region, namer, period, scenario, percentile, a
       values <- c(200, 4200)
       print("title")} 
     else if(vari == "dlyfrzthw"){
-      pal <- colorNumeric("Spectral", domain = c(40, 105))
+      pal <- colorNumeric("Spectral", domain = c(0, 105))
       title <- sprintf("Évènements gel-dégel -%s", all_selec)
-      values <- c(40, 105)
+      values <- c(0, 105)
       print("title")} 
     else if(vari == "growing_season_length"){
-      pal <- colorNumeric("Spectral", domain = c(100, 215))
+      pal <- colorNumeric("Spectral", domain = c(100, 280))
       title <- sprintf("Saison de croissance -%s", all_selec)
-      values <- c(100, 215)
+      values <- c(100, 280)
       print("title")} 
     fillColor <- pal(dataTG[[all_selec]])
     print ("fillcolor--------------------")
@@ -144,15 +157,113 @@ addmapr <- function(dataTG, vari, region, namer, period, scenario, percentile, a
       # #leaflet("map")%>% #debugging
       addLegend(pal = pal, values = values ,  title = title, opacity = 0.7,
                 position = "topleft")
- )
-  #print("leafproxy")
-}
+ )}
 
 
 ##### SHINY FUNCTION
 function(input, output, session) {
   
-  ## Interactive Map ###########################################
+  #### CHANGING SEASON, TIME PERIOD AND PERCENTILE
+  saisonf <- function(horizon2){
+    if (horizon2 == 'Historique' || horizon2 == '2041-2070' || horizon2 =='2071-2100'){
+    horizon <- horizon2
+    scenario <- input$Scenario
+    percentile <- input$Percentile
+    if (input$Saisonnalite == "Annuel" ){
+      saisoni <- "annual"
+      seasoni2 <- ""}
+    if (input$Saisonnalite == "Saisonier" ){
+      saisoni <- "seasonal"
+      seasoni2 <- paste(input$season, "_", sep="")}
+    if (input$Saisonnalite == "Mensuel" ){
+      saisoni <- "monthly"
+      seasoni2 <- paste(input$Mois, "_", sep="")}
+    all_seleci <- conditions(seasoni2, horizon, scenario, percentile)}
+    listsaison <- list(saisoni, seasoni2, all_seleci)
+    return  (listsaison)}
+  
+  ### Function to change region for one or all regions
+  regionf <- function(echele2, sousregion2){
+    if (echele2 == 'Domaines bioclimatiques'){
+      namer <- "NOM"
+      if (sousregion2 == "Toutes") {region <- "DB"} 
+      else {region <- input$Domaines}
+    } else  if (echele2 == "Sous-domaines bioclimatiques"){
+      namer <- "NOM"
+      if (sousregion2 == "Toutes") {region <- "SDB"} 
+      else {region <- input$Sousdomaines}
+    } else  if (echele2 == "Régions écologiques"){
+      namer <- "NOM"
+      if (sousregion2 == "Toutes") {region <- "RE"} 
+      else {region <- input$RegEcol}
+    } else  if (echele2 ==  "Sous-région écologiques"){
+      namer <- "NOM"
+      if (sousregion2 == "Toutes") {region <- "SRE"} 
+      else {region <- input$SousRegEcol}
+    } else  if (echele2 == "Territoires guides"){
+      namer <- "TER_GUIDE"
+      if (sousregion2 == "Toutes") {region <- "TG"} 
+      else {region <- input$Territoires}
+    } else  if (echele2 == "Secteurs des opérations régionales"){
+      namer <- "D_GENERAL"
+      if (sousregion2 == "Toutes") {region <- "SOR"} 
+      else {region <- input$Secteurs}
+    } else  if (echele2 == "Régions forestières"){
+      namer <- "NM_REG_FOR"
+      if (sousregion2 == "Toutes") {region <- "RF"} 
+      else {region <- input$RegForest}
+    } else  if (echele2 == "Unités d’aménagement (UA)"){
+      namer <- "PER_NO_UA"
+      if (sousregion2 == "Toutes") {region <- "UA"} 
+      else {region <- input$UA}
+    }
+    listrnr <- list(region, namer)
+    return(listrnr)
+  } 
+  
+  
+  ### Function to change region for two or three regions
+  regionf23 <- function(echele2, sousregion2){
+    if (echele2 == 'Domaines bioclimatiques' ){
+      namer <- "NOM"
+      if (sousregion2 == "Toutes") {region <- "DB"} 
+      else {region <- input$Domaines}
+    } else  if (echele2 == "Sous-domaines bioclimatiques"){
+      namer <- "NOM"
+      if (sousregion2 == "Toutes") {region <- "SDB"} 
+      else {region <- input$Sousdomaines}
+    } else  if (echele2 == "Régions écologiques"){
+      namer <- "NOM"
+      if (sousregion2 == "Toutes") {region <- "RE"} 
+      else {region <- input$RegEcol}
+    } else  if (echele2 ==  "Sous-région écologiques"){
+      namer <- "NOM"
+      if (sousregion2 == "Toutes") {region <- "SRE"} 
+      else {region <- input$SousRegEcol}
+    } else  if (echele2 == "Territoires guides"){
+      namer <- "TER_GUIDE"
+      if (sousregion2 == "Toutes") {region <- "TG"} 
+      else {region <- input$Territoires}
+    } else  if (echele2 == "Secteurs des opérations régionales"){
+      namer <- "D_GENERAL"
+      if (sousregion2 == "Toutes") {region <- "SOR"} 
+      else {region <- input$Secteurs}
+    } else  if (echele2 == "Régions forestières"){
+      namer <- "NM_REG_FOR"
+      if (sousregion2 == "Toutes") {region <- "RF"} 
+      else {region <- input$RegForest}
+    } else  if (echele2 == "Unités d’aménagement (UA)"){
+      namer <- "PER_NO_UA"
+      if (sousregion2 == "Toutes") {region <- "UA"} 
+      else {region <- input$UA}
+    }
+    listrnr <- list(region, namer)
+    return(listrnr)
+  } 
+  
+  
+  
+   ## Interactive Map ###########################################
   # Create the map
   output$map <- renderLeaflet({
     leaflet(map) %>%
@@ -164,84 +275,60 @@ function(input, output, session) {
   })
   
   
-  ###### OBSERVE FOR FIRST REGION AND ALL REGION
+  ###### OBSERVE FOR FIRST REGION AND ALL REGIONS
   observe({
-    if (input$Echele == 'Domaines bioclimatiques'){
-      namer <- "NOM"
-      if (input$Sousregions == "Toutes") {region <- "DB"} 
-      else {region <- input$Domaines}
-    } else  if (input$Echele == "Sous-domaines bioclimatiques"){
-      namer <- "NOM"
-      if (input$Sousregions == "Toutes") {region <- "SDB"} 
-      else {region <- input$Sousdomaines}
-    } else  if (input$Echele == "Régions écologiques"){
-      namer <- "NOM"
-      if (input$Sousregions == "Toutes") {region <- "RE"} 
-      else {region <- input$RegEcol}
-    } else  if (input$Echele ==  "Sous-région écologiques"){
-      namer <- "NOM"
-      if (input$Sousregions == "Toutes") {region <- "SRE"} 
-      else {region <- input$SousRegEcol}
-    } else  if (input$Echele == "Territoires guides"){
-      namer <- "TER_GUIDE"
-      if (input$Sousregions == "Toutes") {region <- "TG"} 
-      else {region <- input$Territoires}
-    } else  if (input$Echele == "Secteurs des opérations régionales"){
-      namer <- "D_GENERAL"
-      if (input$Sousregions == "Toutes") {region <- "SOR"} 
-      else {region <- input$Secteurs}
-    } else  if (input$Echele == "Régions forestières"){
-      namer <- "NM_REG_FOR"
-      if (input$Sousregions == "Toutes") {region <- "RF"} 
-      else {region <- input$RegForest}
-    } else  if (input$Echele == "Unités d’aménagement (UA)"){
-      namer <- "PER_NO_UA"
-      if (input$Sousregions == "Toutes") {region <- "UA"} 
-      else {region <- input$UA}
-    }
-    #Default values
-    vari <- "tg_mean"
+    ##Select region
+    listr <- regionf(input$Echele, input$Sousregions) 
+    print("region")
+    region <- unlist(listr[1])
+    print (region)
+    namer <- unlist(listr[2])
+  
+    ##Default values
     period <- "hist"
-    saison <- "annual"
     scenario <- "rcp45"
     percentile <- "50"
     
-    ### CHANGING VARIABLE
-    if (input$Variable == "Précipitations sous forme de neige") {
-      vari <- "solidprcptot"
-      print ("button neige")}
-    if (input$Variable == "Précipitations totales") {
-      vari <- "prcptot"
-      print ("button precip")}
-    if (input$Variable == "Températures moyennes") {
-       vari <- "tg_mean"
-       print ("button tem avg")}
-    if (input$Variable == "Températures maximales") {
-      vari <- "tx_mean"
-      print ("Button tmax")}
-     if (input$Variable == "Températures minimales") {
-      vari <- "tn_mean"
-      print ("button t min")}
-     if (input$Variable == "Degrés-jours de croissance"){
-      vari <- "DJC"
-      print ("button djc")}
-     if (input$Variable == "Évènements gel-dégel"){
-        vari <- "dlyfrzthw"
-        print ("button GelDegel")}
-      if (input$Variable == "Saison de croissance"){
-      vari <- "growing_season_length"
-      print ("button Saison de croissance")}
+    ##Select Variable and season
+    vari <- varif(input$Variable)
+    saisonlist <- saisonf(input$Horizon)
+    saison <- unlist(saisonlist[1])
+    season2 <- unlist(saisonlist[2])
+    all_selec <- unlist(saisonlist[3])
 
-    #### CHANGING TIME PERIOD AND PERCENTILE
-    if (input$Horizon == 'Historique' || input$Horizon == '2041-2070' || input$Horizon =='2071-2100'){
-    horizon <- input$Horizon
-    scenario <- input$Scenario
-    percentile <- input$Percentile
-    all_selec <- conditions(horizon, scenario, percentile)}
-    mapTG(region, namer, vari, period, saison, scenario, percentile, all_selec)
+    ## Modify map
+    fname2 <- fnamef(region, vari, saison)
+    print("fname2")
+    print (fname2)
+    mapTG(region, namer, vari, period, saison, scenario, percentile, all_selec, fname2)
   })
   
-  
+ 
+  ####### DOWNLOAD BUTTON GEOJSON
+  output$downloadData <- downloadHandler(
+    filename <- function() { #
+      listr <- regionf(input$Echele, input$Sousregions) 
+      print("region")
+      region <- unlist(listr[1])
+      print (region)
+      vari <- varif(input$Variable)
+      saisonlist <- saisonf(input$Horizon)
+      saison <- unlist(saisonlist[1])
+      fname2 <- fnamef(region, vari, saison)
+      print ("fname2")
+      print (fname2)},
+    content <- function(file) {
+      listr <- regionf(input$Echele, input$Sousregions) 
+      print("region")
+      region <- unlist(listr[1])
+      print (region)
+      vari <- varif(input$Variable)
+      saisonlist <- saisonf(input$Horizon)
+      saison <- unlist(saisonlist[1])
+      fname2 <- fnamef(region, vari, saison)
+      print ("fname2")
+      print (fname2)
+      file.copy(fname2, file)}  ) 
  
   #  observe({
   #    if (input$Sousregions == "deux"){
@@ -328,11 +415,10 @@ function(input, output, session) {
     clearShapes()
   })
   
-  
 
-  
 ##### FOR THE TABLE  
-  output$tabletest <- renderTable({
+  output$tabletest <- renderTable(
+  {
     xtable(df,digits=2, type = "html", html.table.attributes="class='table-bordered'")
   },
   size="footnotesize", #Change size; useful for bigger tables
@@ -341,8 +427,7 @@ function(input, output, session) {
   include.colnames=FALSE,
   add.to.row = list(pos = list(0),
                     command = "<tr><th><br> Saison </th><th><br> 1981-2010 </th><th colspan='2'> 2041-2070 </th><th  colspan='2'> 2071-2100 </th></tr>
-  <tr><th> </th><th> </th><th> Émissions moderées </th><th> Émissions élevées </th><th> Émissions moderées </th><th> Émissions élevées </th></tr>"
-  ))
+                    <tr><th> </th><th> </th><th> Émissions moderées </th><th> Émissions élevées </th><th> Émissions moderées </th><th> Émissions élevées </th></tr>"))
   
   
  ##### FOR THE TIMESERIES FIGURE
@@ -358,7 +443,10 @@ function(input, output, session) {
     rownames(dfts) <- dfts$time
         keep <- c( "time", "tg_mean_p10", "tg_mean_p50", "tg_mean_p90" )
     dfts2  <- dfts[ , keep]
-    dygraph(dfts2)
+    dygraph(dfts2, main = "Temperature Moyenne ")%>%
+      dySeries("tg_mean_p10", drawPoints = TRUE, pointShape = "square", color = "pink") %>%
+      dySeries("tg_mean_p50", stepPlot = TRUE, fillGraph = FALSE, color = "red") %>%
+      dySeries("tg_mean_p90", drawPoints = TRUE, pointShape = "square", color = "pink")
   })
 
 }

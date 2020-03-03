@@ -120,9 +120,9 @@ addmapr <- function(dataTG, vari, region, namer, period, scenario, percentile, a
       values <- c(0, 50)
       print("title")} 
     else if(vari == "DJC"){
-      pal <- colorNumeric("Spectral", domain = c(200, 4200))
+      pal <- colorNumeric("Spectral", domain = c(0, 4200))
       title <- sprintf("Degrés-jours de croissance (DJC) -%s", all_selec)
-      values <- c(200, 4200)
+      values <- c(0, 4200)
       print("title")} 
     else if(vari == "dlyfrzthw"){
       pal <- colorNumeric("Spectral", domain = c(0, 105))

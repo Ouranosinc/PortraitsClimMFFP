@@ -110,9 +110,9 @@ addmapr <- function(dataTG, vari, region, namer, period, scenario, percentile, a
       values <- c(-28, 36)
       print("title")}
     else if(vari == "prcptot"){
-      pal <- colorNumeric("Spectral", domain = c(50, 1500))
+      pal <- colorNumeric("Spectral", domain = c(50, 1550))
       title <- sprintf("Précipitation totale (mm) -%s", all_selec)
-      values <- c(800, 1500)
+      values <- c(50, 1550)
       print("title")} 
     else if(vari == "solidprcptot"){
       pal <- colorNumeric("Spectral", domain = c(0, 50))

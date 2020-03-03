@@ -110,9 +110,9 @@ addmapr <- function(dataTG, vari, region, namer, period, scenario, percentile, a
       values <- c(-28, 36)
       print("title")}
     else if(vari == "prcptot"){
-      pal <- colorNumeric("Spectral", domain = c(50, 1500))
+      pal <- colorNumeric("Spectral", domain = c(50, 1550))
       title <- sprintf("Précipitation totale (mm) -%s", all_selec)
-      values <- c(800, 1500)
+      values <- c(50, 1550)
       print("title")} 
     else if(vari == "solidprcptot"){
       pal <- colorNumeric("Spectral", domain = c(0, 50))
@@ -120,9 +120,9 @@ addmapr <- function(dataTG, vari, region, namer, period, scenario, percentile, a
       values <- c(0, 50)
       print("title")} 
     else if(vari == "DJC"){
-      pal <- colorNumeric("Spectral", domain = c(200, 4200))
+      pal <- colorNumeric("Spectral", domain = c(0, 4200))
       title <- sprintf("Degrés-jours de croissance (DJC) -%s", all_selec)
-      values <- c(200, 4200)
+      values <- c(0, 4200)
       print("title")} 
     else if(vari == "dlyfrzthw"){
       pal <- colorNumeric("Spectral", domain = c(0, 105))

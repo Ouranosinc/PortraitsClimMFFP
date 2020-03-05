@@ -123,30 +123,23 @@ def proc_period(tuplen, period):
     return(dfp)
 
 
-
-
-
-
-
 ### Getting mask to clip non-processed data into regions with points geometry only
-def latlon_regions(path_filename_shapefile):
+def latlon_regions(path_filename_shapefile, var):
     # Path to files
-    path = "/home/mlopez/EXEC/Tg_annual_11_models/"
+    path = "/scen3/scenario/netcdf/ouranos/portraits-clim-2.0/"
     json = pathlib.Path(path_filename_shapefile)
-    files = list(glob.glob(os.path.join(path,'*.*')))
+    files = list(glob.glob(path+"*"+"rcp85_"+var+"_annual.nc"))+[path+"NRCAN_obs_"+var+"_annual.nc"]
     datasets = [xr.open_dataset(f) for f in files]
     latlon_df_0 = pd.concat(pd.DataFrame(itertools.product(ds.lat.values, ds.lon.values), columns=["lat","lon"]) 
                             for ds in datasets).drop_duplicates(["lat","lon"])
     latlon_df = gpd.GeoDataFrame(latlon_df_0)
     latlon_df["geometry"] = [Point(lon, lat) for (lat,lon) in zip(latlon_df.lat, latlon_df.lon)]
     shape = gpd.read_file(json)
-    shape2 = shape[shape.name != 'NoneType']
+    #print (shape)
+    shape2 = shape[shape.geometry != None]
     #Reading Shapefiles in right coordinate system
     shape2 = shape2.to_crs({'init': 'epsg:4326'})
-    shape = 0
     latlon_res = gpd.sjoin(latlon_df, shape2, op="within")
-    latlon_df = 0
-    shape2=0
     return latlon_res
 
 #### Clipping by region to plot static images   

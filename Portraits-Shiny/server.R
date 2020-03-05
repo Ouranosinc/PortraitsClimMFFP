@@ -94,51 +94,53 @@ addmapr <- function(dataTG, vari, region, namer, period, scenario, percentile, a
     labels <- sprintf("Région: %s : %s", dataTG[[namer]], dataTG[[all_selec]]) 
     print ("labels")
     print ("values")
+    #print (dataTG[[all_selec]])
     if(vari == "tg_mean"){
-    pal <- colorNumeric("Spectral", domain = c(-26, 30))
+    pal <- colorNumeric("Spectral", domain = dataTG[[all_selec]])
     title <- sprintf("Température Moy (°C) -%s", all_selec)
-    values <- c(-25, 30)
+    values <-dataTG[[all_selec]]
     print("title")}
     else if(vari == "tn_mean"){
-      pal <- colorNumeric("Spectral", domain = c(-30, 25))
+      pal <- colorNumeric("Spectral", domain = dataTG[[all_selec]])
       title <- sprintf("Température Min (°C) -%s", all_selec)
-      values <- c(-30, 25)
+      values <- dataTG[[all_selec]]
       print("title")}
     else if(vari == "tx_mean"){
-      pal <- colorNumeric("Spectral", domain = c(-28, 36))
+      pal <- colorNumeric("Spectral", domain = dataTG[[all_selec]])
       title <- sprintf("Température Max (°C) -%s", all_selec)
-      values <- c(-28, 36)
+      values <- dataTG[[all_selec]]
       print("title")}
     else if(vari == "prcptot"){
-      pal <- colorNumeric("Spectral", domain = c(50, 1550))
+      pal <- colorNumeric("Spectral", domain = dataTG[[all_selec]])
       title <- sprintf("Précipitation totale (mm) -%s", all_selec)
-      values <- c(50, 1550)
+      values <- dataTG[[all_selec]]
       print("title")} 
     else if(vari == "solidprcptot"){
-      pal <- colorNumeric("Spectral", domain = c(0, 50))
+      pal <- colorNumeric("Spectral", domain = dataTG[[all_selec]])
       title <- sprintf("Précipitation neige (cm) -%s", all_selec)
-      values <- c(0, 50)
+      values <- dataTG[[all_selec]]
       print("title")} 
     else if(vari == "DJC"){
-      pal <- colorNumeric("Spectral", domain = c(0, 4200))
+      pal <- colorNumeric("Spectral", domain = dataTG[[all_selec]])
       title <- sprintf("Degrés-jours de croissance (DJC) -%s", all_selec)
-      values <- c(0, 4200)
+      values <- dataTG[[all_selec]]
       print("title")} 
     else if(vari == "dlyfrzthw"){
-      pal <- colorNumeric("Spectral", domain = c(0, 105))
+      pal <- colorNumeric("Spectral", domain = dataTG[[all_selec]])
       title <- sprintf("Évènements gel-dégel -%s", all_selec)
-      values <- c(0, 105)
+      values <- dataTG[[all_selec]]
       print("title")} 
     else if(vari == "growing_season_length"){
-      pal <- colorNumeric("Spectral", domain = c(100, 280))
+      pal <- colorNumeric("Spectral", domain = dataTG[[all_selec]])
       title <- sprintf("Saison de croissance -%s", all_selec)
-      values <- c(100, 280)
+      values <- dataTG[[all_selec]]
       print("title")} 
     fillColor <- pal(dataTG[[all_selec]])
     print ("fillcolor--------------------")
   
   return(leafletProxy("map", data = dataTG) %>%
    clearControls() %>%
+     clearShapes() %>%
    #leaflet("map")%>% #for debugging
   addPolygons (
     data = dataTG, 

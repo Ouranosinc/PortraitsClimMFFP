@@ -1,4 +1,5 @@
 library(shiny)
+options (shiny.port=80)
 library(leaflet)
 library(shinyWidgets)
 library(dygraphs)
@@ -478,14 +479,28 @@ navbarPage(div(img(src='MFFP.png', width="100px", align="left")), id="nav",
            tabPanel((div(icon("table"),"Sommaire")),
                     br(),
                     fluidRow(
-                      column(12,
+                      column(9,
                              tableOutput("tabletest"),
-                             div(icon("download"), tags$a(href="Moyenne2.csv", "Télécharger CSV"))
-                      ),
+                             div(icon("download"), tags$a(href="Moyenne2.csv", "Télécharger CSV"))),
+                      column(3,
+                             titlePanel("Portraits Climatiques"),
+                             
+                             navlistPanel(
+                               "Séléctionez l'échele spatiale:",
+                               tabPanel("en construction"),
+                               tabPanel("en construction"),
+                               "Header B",
+                               tabPanel("en construction"),
+                               tabPanel("en construction"),
+                               "-----",
+                               tabPanel("en construction")
+                             )),
+                    fluidRow(
+                      column(12,
                       p("Le tableau représente les changements projetés selon deux scénarios d’émissions de gaz à effet de serre, le scénario modéré (RCP 4.5), qui suppose une stabilisation des émissions d’ici la fin du siècle et le scénario élevé (RCP 8.5), qui suppose une augmentation des émissions jusqu’à la fin du siècle."),
                       p("Les saisons représentent des périodes de trois mois : l’hiver (décembre-janvier-février), le printemps (mars-avril-mai), l’été (juin-juillet-août) et l’automne (septembre-octobre-novembre)."),
-                      p("Les valeurs représentent des moyennes pour la région sélectionnée, calculées à partir d’un ensemble de simulations climatiques globales de l'ensemble CMIP5 pour la période de référence 1981-2010, la période 2041-2070 (l’horizon 2050) et la période 2071-2100 (l’horizon 2080). L’intervalle dans le tableau indique les 10e et 90e percentiles des 11 simulations climatiques utilisées. Ainsi, les 10e et 90e percentiles représentent la sensibilité des différents modèles climatiques aux émissions de gaz à effet de serre utilisés comme forçage ainsi qu’à la variabilité naturelle du climat."))),
-           
+                      p("Les valeurs représentent des moyennes pour la région sélectionnée, calculées à partir d’un ensemble de simulations climatiques globales de l'ensemble CMIP5 pour la période de référence 1981-2010, la période 2041-2070 (l’horizon 2050) et la période 2071-2100 (l’horizon 2080). L’intervalle dans le tableau indique les 10e et 90e percentiles des 11 simulations climatiques utilisées."),
+                      p("Ainsi, les 10e et 90e percentiles représentent la sensibilité des différents modèles climatiques aux émissions de gaz à effet de serre utilisés comme forçage ainsi qu’à la variabilité naturelle du climat."))))),
            tabPanel(div(icon("image"), "Graphique"),
                     br(),
                     dygraphOutput("dygraph"),
@@ -494,8 +509,8 @@ navbarPage(div(img(src='MFFP.png', width="100px", align="left")), id="nav",
                     p("Le tracé vert représente les observations interpolées à partir de stations météorologiques pour la période 1951-2013;"),
                     p("Le tracé bleu représente la tendance médiane de l’ensemble des simulations avec le scénario modéré d’émissions (RCP 4.5);"),
                     p("Le tracé rouge représente la tendance médiane de l’ensemble des simulations avec le scénario élevé d’émissions (RCP 8.5);"),
-                    p("Les enveloppes grise, bleue et rouge représentent la plage des valeurs annuelles de l’ensemble, soit les données comprises entre le 10e et le 90e percentile des simulations utilisées pour la période historique (1951-2005) et future (2006-2100). Les projections futures sont présentées pour les émissions modérées (RCP 4.5) et élevées (RCP 8.5) par des enveloppes rouges et bleues, respectivement.")),
-           
+                    p("Les enveloppes grise, bleue et rouge représentent la plage des valeurs annuelles de l’ensemble, soit les données comprises entre le 10e et le 90e percentile des simulations utilisées pour la période historique (1951-2005) et future (2006-2100).
+                      Les projections futures sont présentées pour les émissions modérées (RCP 4.5) et élevées (RCP 8.5) par des enveloppes rouges et bleues, respectivement.")),
            tabPanel(div(icon("info"), "Information"),
                     br(),
                     div(

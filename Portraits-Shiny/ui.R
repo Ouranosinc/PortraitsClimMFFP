@@ -1,4 +1,5 @@
 library(shiny)
+options (shiny.port=80)
 library(leaflet)
 library(shinyWidgets)
 library(dygraphs)

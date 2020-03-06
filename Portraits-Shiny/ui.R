@@ -182,7 +182,7 @@ navbarPage(div(img(src='MFFP.png', width="100px", align="left")), id="nav",
                                              c("10" = "10", "50" = "50", "90" = "90"), selected = "50", inline = TRUE)), 
                                 
                                 ###DOWNLOAD GEOJSON
-                                downloadButton("downloadData", "Download")
+                                downloadButton("downloadData", "Télécharger GeoJson")
                                
                         ),
                         
@@ -242,6 +242,8 @@ navbarPage(div(img(src='MFFP.png', width="100px", align="left")), id="nav",
                                                                       choices=c("Janvier" = "january", "Février" = "february", "Mars" = "march", "Avril" = "april","Mai"= "may",
                                                                                 "Juin" = "june", "Julliet" ="july","Aout"="august","Septembre"="september","Octobre"="october",
                                                                                 "Novembre"="november","Decembre"="december")))),
+                        ###DOWNLOAD TABLE CSV
+                        downloadButton("downloadDataT", "Télécharger CSV")
                         
                         
                       ),
@@ -249,13 +251,75 @@ navbarPage(div(img(src='MFFP.png', width="100px", align="left")), id="nav",
                       mainPanel(
                         tableOutput("tabletest")
                       )
-                    )
+                    ),
+                    p("Le tableau représente les changements projetés selon deux scénarios d’émissions de gaz à effet de serre, le scénario modéré (RCP 4.5), qui suppose une stabilisation des émissions d’ici la fin du siècle et le scénario élevé (RCP 8.5), qui suppose une augmentation des émissions jusqu’à la fin du siècle."),
+                    p("Les saisons représentent des périodes de trois mois : l’hiver (décembre-janvier-février), le printemps (mars-avril-mai), l’été (juin-juillet-août) et l’automne (septembre-octobre-novembre)."),
+                    p("Les valeurs représentent des moyennes pour la région sélectionnée, calculées à partir d’un ensemble de simulations climatiques globales de l'ensemble CMIP5 pour la période de référence 1981-2010, la période 2041-2070 (l’horizon 2050) et la période 2071-2100 (l’horizon 2080). L’intervalle dans le tableau indique les 10e et 90e percentiles des 11 simulations climatiques utilisées. Ainsi, les 10e et 90e percentiles représentent la sensibilité des différents modèles climatiques aux émissions de gaz à effet de serre utilisés comme forçage ainsi qu’à la variabilité naturelle du climat.")
                      
            ),
            tabPanel(div(icon("image"), "Graphique"),
-                    br(),
-                    dygraphOutput("dygraph"),
-                    div(icon("download"), tags$a(href="Moyenne.csv", "Télécharger CSV")),
+                    sidebarLayout(
+                      
+                      sidebarPanel(
+                        ###Échele spatiale
+                        selectInput("EcheleTS", "Séléctionez l'échele spatiale:",
+                                    choices=c("Territoires guides", "Domaines bioclimatiques", "Sous-domaines bioclimatiques", "Régions écologiques", 
+                                              "Sous-région écologiques",  "Secteurs des opérations régionales",
+                                              "Régions forestières", "Unités d’aménagement (UA)")), 
+                        #### Une région     
+                        conditionalPanel(condition = "input.EcheleTS == 'Domaines bioclimatiques'",
+                                         selectInput("Domaines", "Séléctionez le domaine :",
+                                                     choices= DomainesC)),
+                        conditionalPanel(condition = "input.EcheleTS == 'Sous-domaines bioclimatiques' ",
+                                         selectInput("Sousdomaines", "Séléctionez le sous-domaine:",
+                                                     choices= SousdomainesC)),
+                        conditionalPanel(condition = "input.EcheleTS == 'Régions écologiques' ",
+                                         selectInput("RegEcol", "Séléctionez la région:",
+                                                     choices= RegEcolC)),
+                        conditionalPanel(condition = "input.EcheleTS == 'Sous-région écologiques' ",
+                                         selectInput("SousRegEcol", "Séléctionez la sous-région:",
+                                                     choices= SousRegEcolC)),
+                        conditionalPanel(condition = "input.EcheleTS == 'Territoires guides' ",
+                                         selectInput("Territoires", "Séléctionez le territoire:",
+                                                     choices= TerritoiresC)),
+                        conditionalPanel(condition = "input.EcheleTS == 'Secteurs des opérations régionales' ",
+                                         selectInput("Secteurs", "Séléctionez le secteur:",
+                                                     choices= SecteursC)),                
+                        conditionalPanel(condition = "input.EcheleTS == 'Régions forestières' ",
+                                         selectInput("RegForest", "Séléctionez la région:",
+                                                     choices=RegForestC)),                
+                        conditionalPanel(condition = "input.EcheleTS == 'Unités d’aménagement (UA)' ",
+                                         selectInput("UA", "Séléctionez l'unité:",
+                                                     choices= UAC)),  
+                        ###Variable
+                        selectInput("VariableTS", "Séléctionez la variable climatique:",
+                                    choices=c("Températures moyennes", "Températures minimales", "Températures maximales", "Précipitations totales",  
+                                              "Précipitations sous forme de neige",
+                                              "Degrés-jours de croissance", "Évènements gel-dégel", "Saison de croissance")),
+                        ###Saisonnalité
+                        conditionalPanel(condition = "input.VariableTS != 'Saison de croissance'",
+                                         selectInput("SaisonnaliteTS", "Séléctionez la saisonnalité:",
+                                                     choices=c("Annuel", "Saisonier", "Mensuel" )),
+                                         conditionalPanel(condition = "input.SaisonnaliteTS == 'Saisonier'",
+                                                          radioButtons("seasonT", "Séléctionez la saison:",
+                                                                       c("Hiver"="winterTS", "Printemps"= "springTS",
+                                                                         "Été"= "summerTS","Automne"= "fallTS"), inline = TRUE)),
+                                         conditionalPanel(condition = "input.SaisonnaliteTS == 'Mensuel'",
+                                                          selectInput("MoisTS", "Séléctionez le mois:",
+                                                                      choices=c("Janvier" = "january", "Février" = "february", "Mars" = "march", "Avril" = "april","Mai"= "may",
+                                                                                "Juin" = "june", "Julliet" ="july","Aout"="august","Septembre"="september","Octobre"="october",
+                                                                                "Novembre"="november","Decembre"="december")))),
+                        ###DOWNLOAD TABLE CSV
+                        downloadButton("downloadDataTS", "Télécharger CSV")
+                        
+                        
+                      ),
+                      
+                      mainPanel(
+                        dygraphOutput("dygraph"),
+                      )
+                    ),
+                    
                     p("La figure représente les changements projetés dans le temps selon deux scénarios d'émissions de gaz à effet de serre : le scénario modéré (RCP 4.5), qui suppose une stabilisation des émissions d'ici la fin du siècle, ainsi que le scénario élevé (RCP 8.5), qui suppose une augmentation des émissions jusqu'à la fin du siècle. Les valeurs sont calculées à partir d'un ensemble de simulations climatiques globales produit à partir de l'ensemble CMIP5."),
                     p("Le tracé vert représente les observations interpolées à partir de stations météorologiques pour la période 1951-2013;"),
                     p("Le tracé bleu représente la tendance médiane de l'ensemble des simulations avec le scénario modéré d'émissions (RCP 4.5);"),

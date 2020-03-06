@@ -31,7 +31,6 @@ conditions <- function(season2, horizon, scenario, percentile){
   return(all_selec)}
 
 
-
 ### CHANGING VARIABLE
 varif  <- function(Variable2){
   if (Variable2 == "Précipitations sous forme de neige") {
@@ -434,21 +433,26 @@ function(input, output, session) {
   
  ##### FOR THE TIMESERIES FIGURE
   
-  dfts <- read.csv("www/p4tgmean.csv")
+  dfts <- read.csv("www/11263tg_mean.csv") #p4tgmean.csv")
   rownames(dfts) <- dfts$time
   #series <- ts(d2f$time,  df2$tg_mean_p50) 
-  keep <- c( "time", "tg_mean_p10", "tg_mean_p50", "tg_mean_p90" )
+  keep <- c( "time", "tg_mean_p10_45","tg_mean_p50_45","tg_mean_p90_45","tg_mean_p10_85","tg_mean_p50_85","tg_mean_p90_85","tg_mean_Obs" )
   dfts2  <- dfts[ , keep]
   
   output$dygraph <- renderDygraph({
-    dfts <- read.csv("www/p4tgmean.csv")
+    dfts <- read.csv("www/11263tg_mean.csv")
     rownames(dfts) <- dfts$time
-        keep <- c( "time", "tg_mean_p10", "tg_mean_p50", "tg_mean_p90" )
+        keep <- c( "time","tg_mean_p10_45","tg_mean_p50_45","tg_mean_p90_45","tg_mean_p10_85", "tg_mean_p50_85","tg_mean_p90_85", "tg_mean_Obs" )
     dfts2  <- dfts[ , keep]
     dygraph(dfts2, main = "Temperature Moyenne ")%>%
-      dySeries("tg_mean_p10", drawPoints = TRUE, pointShape = "square", color = "pink") %>%
-      dySeries("tg_mean_p50", stepPlot = TRUE, fillGraph = FALSE, color = "red") %>%
-      dySeries("tg_mean_p90", drawPoints = TRUE, pointShape = "square", color = "pink")
+      dySeries("tg_mean_p10_85", drawPoints = TRUE, pointShape = "square", color = "pink") %>%
+      dySeries("tg_mean_p50_85", stepPlot = TRUE, fillGraph = FALSE, color = "red") %>%
+      dySeries("tg_mean_p90_85", drawPoints = TRUE, pointShape = "square", color = "pink")%>%
+      dySeries("tg_mean_p10_45", drawPoints = TRUE, pointShape = "square", color = "blue") %>%
+      dySeries("tg_mean_p50_45", stepPlot = TRUE, fillGraph = FALSE, color = "green") %>%
+      dySeries("tg_mean_p90_45", drawPoints = TRUE, pointShape = "square", color = "blue")%>%
+      dySeries("tg_mean_p90_45", drawPoints = TRUE, pointShape = "square", color = "blue")%>%
+      dySeries("tg_mean_Obs", drawPoints = TRUE, pointShape = "square", color = "orange")
   })
 
 }

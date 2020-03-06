@@ -194,10 +194,55 @@ navbarPage(div(img(src='MFFP.png', width="100px", align="left")), id="nav",
                     sidebarLayout(
                       
                       sidebarPanel(
-                        selectInput("dataset", "Séléctionez l'échele spatiale:",
-                                    choices = c("rock", "pressure", "cars")),
+                        ###Échele spatiale
+                        selectInput("EcheleT", "Séléctionez l'échele spatiale:",
+                                    choices=c("Territoires guides", "Domaines bioclimatiques", "Sous-domaines bioclimatiques", "Régions écologiques", 
+                                              "Sous-région écologiques",  "Secteurs des opérations régionales",
+                                              "Régions forestières", "Unités d’aménagement (UA)")), 
+                                                #### Une région     
+                        conditionalPanel(condition = "input.EcheleT == 'Domaines bioclimatiques'",
+                                         selectInput("Domaines", "Séléctionez le domaine :",
+                                                     choices= DomainesC)),
+                        conditionalPanel(condition = "input.EcheleT == 'Sous-domaines bioclimatiques' ",
+                                         selectInput("Sousdomaines", "Séléctionez le sous-domaine:",
+                                                     choices= SousdomainesC)),
+                        conditionalPanel(condition = "input.EcheleT == 'Régions écologiques' ",
+                                         selectInput("RegEcol", "Séléctionez la région:",
+                                                     choices= RegEcolC)),
+                        conditionalPanel(condition = "input.EcheleT == 'Sous-région écologiques' ",
+                                         selectInput("SousRegEcol", "Séléctionez la sous-région:",
+                                                     choices= SousRegEcolC)),
+                        conditionalPanel(condition = "input.EcheleT == 'Territoires guides' ",
+                                         selectInput("Territoires", "Séléctionez le territoire:",
+                                                     choices= TerritoiresC)),
+                        conditionalPanel(condition = "input.EcheleT == 'Secteurs des opérations régionales' ",
+                                         selectInput("Secteurs", "Séléctionez le secteur:",
+                                                     choices= SecteursC)),                
+                        conditionalPanel(condition = "input.EcheleT == 'Régions forestières' ",
+                                         selectInput("RegForest", "Séléctionez la région:",
+                                                     choices=RegForestC)),                
+                        conditionalPanel(condition = "input.EcheleT == 'Unités d’aménagement (UA)' ",
+                                         selectInput("UA", "Séléctionez l'unité:",
+                                                     choices= UAC)),  
+                        ###Variable
+                        selectInput("Variable", "Séléctionez la variable climatique:",
+                                    choices=c("Températures moyennes", "Températures minimales", "Températures maximales", "Précipitations totales",  
+                                              "Précipitations sous forme de neige",
+                                              "Degrés-jours de croissance", "Évènements gel-dégel", "Saison de croissance")),
+                        ###Saisonnalité
+                        conditionalPanel(condition = "input.Variable != 'Saison de croissance'",
+                                         selectInput("SaisonnaliteT", "Séléctionez la saisonnalité:",
+                                                     choices=c("Annuel", "Saisonier", "Mensuel" )),
+                                         conditionalPanel(condition = "input.SaisonnaliteT == 'Saisonier'",
+                                                          radioButtons("seasonT", "Séléctionez la saison:",
+                                                                       c("Hiver"="winterT", "Printemps"= "springT",
+                                                                         "Été"= "summerT","Automne"= "fallT"), inline = TRUE)),
+                                         conditionalPanel(condition = "input.SaisonnaliteT == 'Mensuel'",
+                                                          selectInput("MoisT", "Séléctionez le mois:",
+                                                                      choices=c("Janvier" = "january", "Février" = "february", "Mars" = "march", "Avril" = "april","Mai"= "may",
+                                                                                "Juin" = "june", "Julliet" ="july","Aout"="august","Septembre"="september","Octobre"="october",
+                                                                                "Novembre"="november","Decembre"="december")))),
                         
-                        numericInput("obs", "Observations:", 10)
                         
                       ),
                       

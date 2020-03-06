@@ -31,39 +31,11 @@ conditions <- function(season2, horizon, scenario, percentile){
   return(all_selec)}
 
 
-### CHANGING VARIABLE
-varif  <- function(Variable2){
-  if (Variable2 == "Précipitations sous forme de neige") {
-    vari <- "solidprcptot"
-    print ("button neige")}
-  if (Variable2 == "Précipitations totales") {
-    vari <- "prcptot"
-    print ("button precip")}
-  if (Variable2 == "Températures moyennes") {
-    vari <- "tg_mean"
-    print ("button tem avg")}
-  if (Variable2 == "Températures maximales") {
-    vari <- "tx_mean"
-    print ("Button tmax")}
-  if (Variable2 == "Températures minimales") {
-    vari <- "tn_mean"
-    print ("button t min")}
-  if (Variable2 == "Degrés-jours de croissance"){
-    vari <- "DJC"
-    print ("button djc")}
-  if (Variable2 == "Évènements gel-dégel"){
-    vari <- "dlyfrzthw"
-    print ("button GelDegel")}
-  if (Variable2 == "Saison de croissance"){
-    vari <- "growing_season_length"
-    print ("button Saison de croissance")}
-  return(vari)}
-
 ##### INTERMIDIATE STEP *** CHECK IF STILL NEED IT
 mapTG <- function(region, namer, vari, period, saison, scenario, percentile, all_selec, fname2){ 
   print (region)
   dataTG <- load_json(fname2) ### THIS STEP TAKES VERY LONG
-  print ("dataTG" )
+  #print ("dataTG" )
   vari <- vari
   addmapr(dataTG, vari, region, namer, period, scenario, percentile, all_selec) 
 }
@@ -72,38 +44,36 @@ mapTG <- function(region, namer, vari, period, saison, scenario, percentile, all
 fnamef <- function (region, vari, saison){
   #SUBSTITUTE ACCENTS
   nameA <- str_replace_all(region, c( "é"= "e", "à"="a", "è"= "e", "ô" = "o", "ç"="c", "É"="E", "È"="E", "Î"="i", "Ç"="C"))
-  print (nameA)
+  #print (nameA)
   fname3 <- paste("www/",nameA,"_", vari, "_",saison, ".json",sep="")
-  print(fname3)
+  #print(fname3)
   return(fname3)}
 
 ###### LOAD GEOJSON FILE
 load_json <- function (fname2){
-  print ("load json")
+  #print ("load json")
   geojsonio::geojson_read(fname2, what = "sp")
  # filename(nameA, vari, saison)
 }
 
 #### MODIFY MAP BASED ON SELECTION - LEAFLETPROXY
 addmapr <- function(dataTG, vari, region, namer, period, scenario, percentile, all_selec){ 
-    print (region)
-    print (namer)
-    print("all_selec")
+    #print (region)
+    #print (namer)
+    #print("all_selec")
     #print(dataTG[[all_selec]])
     labels <- sprintf("Région: %s : %s", dataTG[[namer]], dataTG[[all_selec]]) 
-    print ("labels")
-    print ("values")
+    #print ("labels")
+    #print ("values")
     #print (dataTG[[all_selec]])
     if(vari == "tg_mean"){
     pal <- colorNumeric("Spectral", domain = dataTG[[all_selec]])
     title <- sprintf("Température Moy (Â°C) -%s", all_selec)
-    values <-dataTG[[all_selec]]
-    print("title")}
+    values <-dataTG[[all_selec]]}
     else if(vari == "tn_mean"){
       pal <- colorNumeric("Spectral", domain = dataTG[[all_selec]])
       title <- sprintf("Température Min (Â°C) -%s", all_selec)
-      values <- dataTG[[all_selec]]
-      print("title")}
+      values <- dataTG[[all_selec]]}
     else if(vari == "tx_mean"){
       pal <- colorNumeric("Spectral", domain = dataTG[[all_selec]])
       title <- sprintf("Température Max (Â°C) -%s", all_selec)
@@ -135,8 +105,6 @@ addmapr <- function(dataTG, vari, region, namer, period, scenario, percentile, a
       values <- dataTG[[all_selec]]
       print("title")} 
     fillColor <- pal(dataTG[[all_selec]])
-    print ("fillcolor--------------------")
-  
   return(leafletProxy("map", data = dataTG) %>%
    clearControls() %>%
      clearShapes() %>%
@@ -262,7 +230,33 @@ function(input, output, session) {
     return(listrnr)
   } 
   
-  
+  ### CHANGING VARIABLE
+  varif  <- function(Variable2){
+    if (Variable2 == "Précipitations sous forme de neige") {
+      vari <- "solidprcptot"
+      print ("button neige")}
+    if (Variable2 == "Précipitations totales") {
+      vari <- "prcptot"
+      print ("button precip")}
+    if (Variable2 == "Températures moyennes") {
+      vari <- "tg_mean"
+      print ("button tem avg")}
+    if (Variable2 == "Températures maximales") {
+      vari <- "tx_mean"
+      print ("Button tmax")}
+    if (Variable2 == "Températures minimales") {
+      vari <- "tn_mean"
+      print ("button t min")}
+    if (Variable2 == "Degrés-jours de croissance"){
+      vari <- "DJC"
+      print ("button djc")}
+    if (Variable2 == "Évènements gel-dégel"){
+      vari <- "dlyfrzthw"
+      print ("button GelDegel")}
+    if (Variable2 == "Saison de croissance"){
+      vari <- "growing_season_length"
+      print ("button Saison de croissance")}
+    return(vari)}
   
    ## Interactive Map ###########################################
   # Create the map
@@ -299,8 +293,8 @@ function(input, output, session) {
 
     ## Modify map
     fname2 <- fnamef(region, vari, saison)
-    print("fname2")
-    print (fname2)
+    #print("fname2")
+    #print (fname2)
     mapTG(region, namer, vari, period, saison, scenario, percentile, all_selec, fname2)
   })
   
@@ -432,15 +426,41 @@ function(input, output, session) {
   
   
  ##### FOR THE TIMESERIES FIGURE
+  #variTS <- varif(input$VariableTS)
   
-  dfts <- read.csv("www/11263tg_mean.csv") #p4tgmean.csv")
+    ### Reactive funcions to select the space scale
+  regfor <- reactive(input$RegForestTS)
+  terrguid <- reactive(input$TerritoiresTS)
+  dombio <- reactive(input$DomainesTS)
+  sdombio <- reactive(input$SousdomainesTS)
+  regeco <- reactive(input$RegEcoLTS)
+  sregeco <- reactive(input$SousRegEcoLTS)
+  sec <- reactive(input$SecteursTS)
+  ua <- reactive(input$UATS)
+  echelleTS <- reactive(input$echelleTS)
+  sousechelleTS <- reactive({ if (echelleTS() == "Régions forestières") {regfor()} 
+    else if (echelleTS() == "Territoires guides") {terrguid()}
+    else if (echelleTS() == "Domaines bioclimatiques") {dombio()}
+    else if (echelleTS() == "Sous-domaines bioclimatiques") {sdombio()}
+    else if (echelleTS() == "Régions écologiques") {regeco()}
+    else if (echelleTS() == "Sous-région écologiques") {sregeco()}
+    else if (echelleTS() == "Secteurs des opérations régionales") {sec()}
+    else if (echelleTS() == "Unités d’aménagement (UA)") {ua()}})
+  observe(
+    print(sousechelleTS())
+  )
+  
+  #paste(variTS,"_p10_45"), paste(variTS,"_p50_45"), paste(variTS,"_p90_45"), paste(variTS,"_p10_85"), paste(variTS,"_p50_85"),paste(variTS,"_p90_85"),paste(variTS,"_Obs"
+  #dfts <- read.csv(paste("www/",sousechelleTS(),"tg_mean.csv", sep=''))
+  dfts <- read.csv("www/1atg_mean.csv")
+  
   rownames(dfts) <- dfts$time
   #series <- ts(d2f$time,  df2$tg_mean_p50) 
-  keep <- c( "time", "tg_mean_p10_45","tg_mean_p50_45","tg_mean_p90_45","tg_mean_p10_85","tg_mean_p50_85","tg_mean_p90_85","tg_mean_Obs" )
+  keep <- c( "time", "tg_mean_p10_45", "tg_mean_p50_45", "tg_mean_p90_45", "tg_mean_p10_85", "tg_mean_p50_85", "tg_mean_p90_85", "tg_mean_Obs" )
   dfts2  <- dfts[ , keep]
   
   output$dygraph <- renderDygraph({
-    dfts <- read.csv("www/11263tg_mean.csv")
+    dfts <- read.csv("www/Saguenay -Lac-Saint-Jeantg_mean.csv")
     rownames(dfts) <- dfts$time
         keep <- c( "time","tg_mean_p10_45","tg_mean_p50_45","tg_mean_p90_45","tg_mean_p10_85", "tg_mean_p50_85","tg_mean_p90_85", "tg_mean_Obs" )
     dfts2  <- dfts[ , keep]

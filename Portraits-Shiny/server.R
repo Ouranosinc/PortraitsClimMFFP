@@ -438,6 +438,27 @@ function(input, output, session) {
   varits1})
   
   
+  seasonTS <- reactive({
+    if (input$SaisonnaliteTS == "Annuel") {season1 <- "annual"}
+    else if (input$seasonTS == "winterTS") {season1 <- "winter"}
+    else if (input$seasonTS == "springTS") {season1 <- "spring"}
+    else if (input$seasonTS == "summerTS") {season1 <- "summer"}
+    else if (input$seasonTS == "fallTS") {season1 <- "fall"}
+    else if (input$MoisTS == "januaryrTS"){season1 <- "january"}
+    else if (input$MoisTS == "februaryTS"){season1 <- "february"}
+    else if (input$MoisTS == "marchTS"){season1 <- "march"}
+    else if (input$MoisTS == "aprilTS"){season1 <- "april"}
+    else if (input$MoisTS == "mayTS"){season1 <- "may"}
+    else if (input$MoisTS == "juneTS"){season1 <- "june"}
+    else if (input$MoisTS == "julyTS"){season1 <- "july"}
+    else if (input$MoisTS == "augustTS"){season1 <- "august"}
+    else if (input$MoisTS == "septemberTS"){season1 <- "september"}
+    else if (input$MoisTS == "octoberTS"){season1 <- "october"}
+    else if (input$MoisTS == "novemberTS"){season1 <- "november"}
+    else if (input$MoisTS == "decemberTS"){season1 <- "december"}
+    season1})
+  
+  
     ### Reactive funcions to select the space scale
   
   echelleTS <- reactive(input$echelleTS)
@@ -449,16 +470,11 @@ function(input, output, session) {
     else if (echelleTS() == "Sous-région écologiques") {input$SousRegEcoLTS}
     else if (echelleTS() == "Secteurs des opérations régionales") {input$SecteursTS}
     else if (echelleTS() == "Unités d’aménagement (UA)") {input$UATS}})
-  observe(
-    print(sousechelleTS()))
-  observeEvent(
-    input$VariableTS, { 
-      print(variTS()) 
-           })
-  observeEvent(
-    input$VariableTS, { 
-      print(variTS()) 
-    })
+  observe(print(sousechelleTS()))
+  observeEvent( input$VariableTS, { 
+      print(variTS())    })
+  observeEvent( input$SaisonnaliteTS, { 
+      print(seasonTS()) })
   
   columnsts <- function(variTS){
     p10_45 <- paste(variTS,"_p10_45", sep="")
@@ -475,7 +491,7 @@ function(input, output, session) {
   
   output$dygraph <- renderDygraph({
     nameATS <- str_replace_all(sousechelleTS(), c( "é"= "e", "à"="a", "è"= "e", "ô" = "o", "ç"="c", "É"="E", "È"="E", "Î"="i", "Ç"="C"))
-    dfts <- read.csv(paste("www/",nameATS,"_",variTS(),"_annual.csv", sep=''))
+    dfts <- read.csv(paste("www/",nameATS,"_",variTS(),"_", seasonTS(),".csv", sep=''))
     listcol <- columnsts (variTS())
     p1045 <- unlist(listcol[1])
     p5045 <- unlist(listcol[2])

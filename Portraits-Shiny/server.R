@@ -303,7 +303,6 @@ function(input, output, session) {
   output$downloadData <- downloadHandler(
     filename <- function() { #
       listr <- regionf(input$Echele, input$Sousregions) 
-      print("region")
       region <- unlist(listr[1])
       print (region)
       vari <- varif(input$Variable)
@@ -504,7 +503,7 @@ function(input, output, session) {
         keep <- c( "time",p1045, p5045, p9045, p1085, p5085,p9085,Obsts)
 
     dfts2  <- dfts[ , keep]
-    dygraph(dfts2, main = "Temperature Moyenne ")%>%
+    dygraph(dfts2, main = input$VariableTS)%>%
       dySeries("tg_mean_p10_85", drawPoints = TRUE, pointShape = "square", color = "pink") %>%
       dySeries("tg_mean_p50_85", stepPlot = TRUE, fillGraph = FALSE, color = "red") %>%
       dySeries("tg_mean_p90_85", drawPoints = TRUE, pointShape = "square", color = "pink")%>%
@@ -514,5 +513,20 @@ function(input, output, session) {
       dySeries("tg_mean_p90_45", drawPoints = TRUE, pointShape = "square", color = "blue")%>%
       dySeries("tg_mean_Obs", drawPoints = TRUE, pointShape = "square", color = "orange")
   })
+  
+  
+  output$downloadDataTS <- downloadHandler(
+    filename <- function() { #
+      nameATS <- str_replace_all(sousechelleTS(), c( "é"= "e", "à"="a", "è"= "e", "ô" = "o", "ç"="c", "É"="E", "È"="E", "Î"="i", "Ç"="C"))
+      fnameTS <- paste("www/",nameATS,"_",variTS(),"_", seasonTS(),".csv", sep='')
+      # print ("fname2")
+       print (fnameTS)
+      },
+    content <- function(file) {
+      nameATS <- str_replace_all(sousechelleTS(), c( "é"= "e", "à"="a", "è"= "e", "ô" = "o", "ç"="c", "É"="E", "È"="E", "Î"="i", "Ç"="C"))
+      fnameTS <- paste("www/",nameATS,"_",variTS(),"_", seasonTS(),".csv", sep='')
+      print ("fnameTS")
+      print (fnameTS)
+      file.copy(fnameTS, file)}  ) 
 
 }

@@ -455,6 +455,10 @@ function(input, output, session) {
     input$VariableTS, { 
       print(variTS()) 
            })
+  observeEvent(
+    input$VariableTS, { 
+      print(variTS()) 
+    })
   
   columnsts <- function(variTS){
     p10_45 <- paste(variTS,"_p10_45", sep="")
@@ -470,7 +474,8 @@ function(input, output, session) {
   
   
   output$dygraph <- renderDygraph({
-    dfts <- read.csv(paste("www/",sousechelleTS(),"tg_mean.csv", sep=''))
+    nameATS <- str_replace_all(sousechelleTS(), c( "é"= "e", "à"="a", "è"= "e", "ô" = "o", "ç"="c", "É"="E", "È"="E", "Î"="i", "Ç"="C"))
+    dfts <- read.csv(paste("www/",nameATS,"_",variTS(),"_annual.csv", sep=''))
     listcol <- columnsts (variTS())
     p1045 <- unlist(listcol[1])
     p5045 <- unlist(listcol[2])

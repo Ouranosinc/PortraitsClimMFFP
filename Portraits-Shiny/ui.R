@@ -301,14 +301,14 @@ navbarPage(div(img(src='MFFP.png', width="100px", align="left")), id="nav",
                                          selectInput("SaisonnaliteTS", "Séléctionez la saisonnalité:",
                                                      choices=c("Annuel", "Saisonier", "Mensuel" )),
                                          conditionalPanel(condition = "input.SaisonnaliteTS == 'Saisonier'",
-                                                          radioButtons("seasonT", "Séléctionez la saison:",
+                                                          radioButtons("seasonTS", "Séléctionez la saison:",
                                                                        c("Hiver"="winterTS", "Printemps"= "springTS",
                                                                          "Été"= "summerTS","Automne"= "fallTS"), inline = TRUE)),
                                          conditionalPanel(condition = "input.SaisonnaliteTS == 'Mensuel'",
                                                           selectInput("MoisTS", "Séléctionez le mois:",
-                                                                      choices=c("Janvier" = "january", "Février" = "february", "Mars" = "march", "Avril" = "april","Mai"= "may",
-                                                                                "Juin" = "june", "Julliet" ="july","Aout"="august","Septembre"="september","Octobre"="october",
-                                                                                "Novembre"="november","Decembre"="december")))),
+                                                                      choices=c("Janvier" = "januaryTS", "Février" = "februaryTS", "Mars" = "marchTS", "Avril" = "aprilTS","Mai"= "mayTS",
+                                                                                "Juin" = "juneTS", "Julliet" ="julyTS","Aout"="augustTS","Septembre"="septemberTS","Octobre"="octoberTS",
+                                                                                "Novembre"="novemberTS","Decembre"="decemberTS")))),
                         ###DOWNLOAD TABLE CSV
                         downloadButton("downloadDataTS", "Télécharger CSV")
                         

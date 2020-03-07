@@ -426,43 +426,62 @@ function(input, output, session) {
   
   
  ##### FOR THE TIMESERIES FIGURE
-  #variTS <- varif(input$VariableTS)
+  variTS <- reactive({
+  if (input$VariableTS == "Précipitations sous forme de neige") {varits1 <- "solidprcptot"}
+  else if (input$VariableTS == "Précipitations totales") {varits1 <- "prcptot"}
+  else if (input$VariableTS == "Températures moyennes") {varits1 <- "tg_mean"}
+  else if (input$VariableTS == "Températures maximales") {varits1 <- "tx_mean"}
+  else if (input$VariableTS == "Températures minimales") {varits1 <- "tn_mean"}
+  else if (input$VariableTS == "Degrés-jours de croissance"){varits1 <- "DJC"}
+  else if (input$VariableTS == "Évènements gel-dégel"){varits1 <- "dlyfrzthw"}
+  else if (input$VariableTS == "Saison de croissance"){varits1 <- "growing_season_length"}
+  varits1})
+  
   
     ### Reactive funcions to select the space scale
-  regfor <- reactive(input$RegForestTS)
-  terrguid <- reactive(input$TerritoiresTS)
-  dombio <- reactive(input$DomainesTS)
-  sdombio <- reactive(input$SousdomainesTS)
-  regeco <- reactive(input$RegEcoLTS)
-  sregeco <- reactive(input$SousRegEcoLTS)
-  sec <- reactive(input$SecteursTS)
-  ua <- reactive(input$UATS)
+  
   echelleTS <- reactive(input$echelleTS)
-  sousechelleTS <- reactive({ if (echelleTS() == "Régions forestières") {regfor()} 
-    else if (echelleTS() == "Territoires guides") {terrguid()}
-    else if (echelleTS() == "Domaines bioclimatiques") {dombio()}
-    else if (echelleTS() == "Sous-domaines bioclimatiques") {sdombio()}
-    else if (echelleTS() == "Régions écologiques") {regeco()}
-    else if (echelleTS() == "Sous-région écologiques") {sregeco()}
-    else if (echelleTS() == "Secteurs des opérations régionales") {sec()}
-    else if (echelleTS() == "Unités d’aménagement (UA)") {ua()}})
+  sousechelleTS <- reactive({ if (echelleTS() == "Régions forestières") {input$RegForestTS} 
+    else if (echelleTS() == "Territoires guides") {input$TerritoiresTS}
+    else if (echelleTS() == "Domaines bioclimatiques") {input$DomainesTS}
+    else if (echelleTS() == "Sous-domaines bioclimatiques") {input$SousdomainesTS}
+    else if (echelleTS() == "Régions écologiques") {input$RegEcoLTS}
+    else if (echelleTS() == "Sous-région écologiques") {input$SousRegEcoLTS}
+    else if (echelleTS() == "Secteurs des opérations régionales") {input$SecteursTS}
+    else if (echelleTS() == "Unités d’aménagement (UA)") {input$UATS}})
   observe(
-    print(sousechelleTS())
-  )
+    print(sousechelleTS()))
+  observeEvent(
+    input$VariableTS, { 
+      print(variTS()) 
+           })
   
-  #paste(variTS,"_p10_45"), paste(variTS,"_p50_45"), paste(variTS,"_p90_45"), paste(variTS,"_p10_85"), paste(variTS,"_p50_85"),paste(variTS,"_p90_85"),paste(variTS,"_Obs"
-  #dfts <- read.csv(paste("www/",sousechelleTS(),"tg_mean.csv", sep=''))
-  dfts <- read.csv("www/1atg_mean.csv")
+  columnsts <- function(variTS){
+    p10_45 <- paste(variTS,"_p10_45", sep="")
+    p50_45 <- paste(variTS,"_p50_45", sep="")
+    p90_45 <- paste(variTS,"_p90_45", sep="")
+    p10_85 <- paste(variTS,"_p10_85", sep="")
+    p50_85 <- paste(variTS,"_p50_85", sep="")
+    p90_85 <- paste(variTS,"_p90_85", sep="")
+    Obs <- paste(variTS,"_Obs",  sep="")
+    listcol <- list(p10_45,p50_45, p90_45, p10_85, p50_85,p90_85,Obs)
+    return(listcol)
+  }
   
-  rownames(dfts) <- dfts$time
-  #series <- ts(d2f$time,  df2$tg_mean_p50) 
-  keep <- c( "time", "tg_mean_p10_45", "tg_mean_p50_45", "tg_mean_p90_45", "tg_mean_p10_85", "tg_mean_p50_85", "tg_mean_p90_85", "tg_mean_Obs" )
-  dfts2  <- dfts[ , keep]
   
   output$dygraph <- renderDygraph({
-    dfts <- read.csv("www/Saguenay -Lac-Saint-Jeantg_mean.csv")
+    dfts <- read.csv(paste("www/",sousechelleTS(),"tg_mean.csv", sep=''))
+    listcol <- columnsts (variTS())
+    p1045 <- unlist(listcol[1])
+    p5045 <- unlist(listcol[2])
+    p9045 <- unlist(listcol[3])
+    p1085 <- unlist(listcol[4])
+    p5085 <- unlist(listcol[5])
+    p9085 <- unlist(listcol[6])
+    Obsts <- unlist(listcol[7])
     rownames(dfts) <- dfts$time
-        keep <- c( "time","tg_mean_p10_45","tg_mean_p50_45","tg_mean_p90_45","tg_mean_p10_85", "tg_mean_p50_85","tg_mean_p90_85", "tg_mean_Obs" )
+        keep <- c( "time",p1045, p5045, p9045, p1085, p5085,p9085,Obsts)
+
     dfts2  <- dfts[ , keep]
     dygraph(dfts2, main = "Temperature Moyenne ")%>%
       dySeries("tg_mean_p10_85", drawPoints = TRUE, pointShape = "square", color = "pink") %>%

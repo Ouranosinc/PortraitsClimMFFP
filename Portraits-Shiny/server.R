@@ -12,10 +12,6 @@ library(xtable)
 library(dygraphs)
 library(stringr)
 
-###### LOAD TABLE
-df <- read.table("www/table2.csv", header = TRUE, sep = ";")
-# setwd("C:\\Users\\marlop1\\Documents\\GitHub\\SuperZip")
-
 
 ####### CONDITIONS FOR HORIZON, SCENARIO, SEASON AND PERCENTILE IN MAPS
 conditions <- function(season2, horizon, scenario, percentile){
@@ -27,15 +23,12 @@ conditions <- function(season2, horizon, scenario, percentile){
   if (horizon == '2071-2100'){
     horizon2 <- "t2080"
     all_selec <- paste(season2, horizon2,"_",scenario,"_p", percentile, sep="")}  
-  print (all_selec)
   return(all_selec)}
 
 
 ##### INTERMIDIATE STEP *** CHECK IF STILL NEED IT
 mapTG <- function(region, namer, vari, period, saison, scenario, percentile, all_selec, fname2){ 
-  print (region)
   dataTG <- load_json(fname2) ### THIS STEP TAKES VERY LONG
-  #print ("dataTG" )
   vari <- vari
   addmapr(dataTG, vari, region, namer, period, scenario, percentile, all_selec) 
 }
@@ -44,9 +37,7 @@ mapTG <- function(region, namer, vari, period, saison, scenario, percentile, all
 fnamef <- function (region, vari, saison){
   #SUBSTITUTE ACCENTS
   nameA <- str_replace_all(region, c( "é"= "e", "à"="a", "è"= "e", "ô" = "o", "ç"="c", "É"="E", "È"="E", "Î"="i", "Ç"="C"))
-  #print (nameA)
   fname3 <- paste("www/",nameA,"_", vari, "_",saison, ".json",sep="")
-  #print(fname3)
   return(fname3)}
 
 ###### LOAD GEOJSON FILE
@@ -58,14 +49,7 @@ load_json <- function (fname2){
 
 #### MODIFY MAP BASED ON SELECTION - LEAFLETPROXY
 addmapr <- function(dataTG, vari, region, namer, period, scenario, percentile, all_selec){ 
-    #print (region)
-    #print (namer)
-    #print("all_selec")
-    #print(dataTG[[all_selec]])
     labels <- sprintf("Région: %s : %s", dataTG[[namer]], dataTG[[all_selec]]) 
-    #print ("labels")
-    #print ("values")
-    #print (dataTG[[all_selec]])
     if(vari == "tg_mean"){
     pal <- colorNumeric("Spectral", domain = dataTG[[all_selec]])
     title <- sprintf("Température Moy (°C) -%s", all_selec)
@@ -259,8 +243,7 @@ function(input, output, session) {
       vari <- "prcptot"
       print ("button precip")}
     if (Variable2 == "Températures moyennes") {
-      vari <- "tg_mean"
-      print ("button tem avg")}
+      vari <- "tg_mean"}
     if (Variable2 == "Températures maximales") {
       vari <- "tx_mean"
       print ("Button tmax")}
@@ -294,9 +277,7 @@ function(input, output, session) {
   observe({
     ##Select region
     listr <- regionf(input$Echele, input$Sousregions) 
-    print("region")
     region <- unlist(listr[1])
-    print (region)
     namer <- unlist(listr[2])
   
     ##Default values
@@ -417,8 +398,55 @@ function(input, output, session) {
   
 
 ##### FOR THE TABLE  
+  
+  ### Reactive funcions to select the space scale
+  
+  EcheleT <- reactive(input$EcheleT)
+  sousechelleT <- reactive({ if (EcheleT() == "Régions forestières") {input$RegForestT} 
+    else if (EcheleT() == "Territoires guides") {input$TerritoiresT}
+    else if (EcheleT() == "Domaines bioclimatiques") {input$DomainesT}
+    else if (EcheleT() == "Sous-domaines bioclimatiques") {input$SousdomainesT}
+    else if (EcheleT() == "Régions écologiques") {input$RegEcoLT}
+    else if (EcheleT() == "Sous-région écologiques") {input$SousRegEcoLT}
+    else if (EcheleT() == "Secteurs des opérations régionales") {input$SecteursT}
+    else if (EcheleT() == "Unités d’aménagement (UA)") {input$UAT}})
+  
+  variT <- reactive({
+  if (input$VariableT == "Précipitations sous forme de neige") {varit1 <- "solidprcptot"}
+  else if (input$VariableT == "Précipitations totales") {varit1 <- "prcptot"}
+  else if (input$VariableT == "Températures moyennes") {varit1 <- "tg_mean"}
+  else if (input$VariableT == "Températures maximales") {varit1 <- "tx_mean"}
+  else if (input$VariableT == "Températures minimales") {varit1 <- "tn_mean"}
+  else if (input$VariableT == "Degrés-jours de croissance"){varit1 <- "DJC"}
+  else if (input$VariableT == "Évènements gel-dégel"){varit1 <- "dlyfrzthw"}
+  else if (input$VariableT == "Saison de croissance"){varit1 <- "growing_season_length"}
+  varit1})
+  
+
+  # observe(
+  #   #print ("table"),
+  #   print(sousechelleT())
+  #   )
+  observeEvent( input$EcheleT, { 
+    print ("table")
+    print(sousechelleT())    })
+  observeEvent( input$VariableT, { 
+    print(variT())    })
+  
+  ###### LOAD TABLE
+  
+  #df <- read.table("www/table2.csv", header = TRUE, sep = ";")
+  #df <- read.table("www/1a_tg_mean_table.csv", header = TRUE, sep = ";")
+  #name region_variable.csv ex: 1a_tg_mean.csv
+  # setwd("C:\\Users\\marlop1\\Documents\\GitHub\\SuperZip") 
+ 
+  
+  ### Output function
   output$tabletest <- renderTable(
+    
   {
+    nameATO <- str_replace_all(sousechelleT(), c( "é"= "e", "à"="a", "è"= "e", "ô" = "o", "ç"="c", "É"="E", "È"="E", "Î"="i", "Ç"="C"))
+    df <- read.table(paste("www/",nameATO,"_",variT(),"_","table.csv", sep=''), header = TRUE, sep = ";")
     xtable(df,digits=2, type = "html", html.table.attributes="class='table-bordered'")
   },
   size="footnotesize", #Change size; useful for bigger tables
@@ -475,7 +503,8 @@ function(input, output, session) {
     else if (echelleTS() == "Sous-région écologiques") {input$SousRegEcoLTS}
     else if (echelleTS() == "Secteurs des opérations régionales") {input$SecteursTS}
     else if (echelleTS() == "Unités d’aménagement (UA)") {input$UATS}})
-  observe(print(sousechelleTS()))
+  observe(
+    print(sousechelleTS()))
   observeEvent( input$VariableTS, { 
       print(variTS())    })
   observeEvent( input$SaisonnaliteTS, { 

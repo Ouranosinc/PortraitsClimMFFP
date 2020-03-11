@@ -433,18 +433,13 @@ function(input, output, session) {
   observeEvent( input$VariableT, { 
     print(variT())    })
   
-  ###### LOAD TABLE
-  
-  #df <- read.table("www/table2.csv", header = TRUE, sep = ";")
-  #df <- read.table("www/1a_tg_mean_table.csv", header = TRUE, sep = ";")
-  #name region_variable.csv ex: 1a_tg_mean.csv
-  # setwd("C:\\Users\\marlop1\\Documents\\GitHub\\SuperZip") 
- 
+
   
   ### Output function
   output$tabletest <- renderTable(
     
   {
+    ###### LOAD TABLE
     nameATO <- str_replace_all(sousechelleT(), c( "é"= "e", "à"="a", "è"= "e", "ô" = "o", "ç"="c", "É"="E", "È"="E", "Î"="i", "Ç"="C"))
     df <- read.table(paste("www/",nameATO,"_",variT(),"_","table.csv", sep=''), header = TRUE, sep = ";")
     xtable(df,digits=2, type = "html", html.table.attributes="class='table-bordered'")

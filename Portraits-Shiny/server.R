@@ -441,7 +441,7 @@ function(input, output, session) {
   {
     ###### LOAD TABLE
     nameATO <- str_replace_all(sousechelleT(), c( "é"= "e", "à"="a", "è"= "e", "ô" = "o", "ç"="c", "É"="E", "È"="E", "Î"="i", "Ç"="C"))
-    df <- read.table(paste("www/",nameATO,"_",variT(),"_","table.csv", sep=''), header = TRUE, sep = ";")
+    df <- read.table(paste("www/",nameATO,"_",variT(),"_","table.csv", sep=''), header = TRUE, sep = ",")
     xtable(df,digits=2, type = "html", html.table.attributes="class='table-bordered'")
   },
   size="footnotesize", #Change size; useful for bigger tables
